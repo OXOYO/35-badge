@@ -361,9 +361,21 @@
             </div>
             
             <div class="badge-actions">
-              <el-button type="primary" @click="copySvg">{{ t('copySvg') }}</el-button>
-              <el-button type="success" @click="downloadSvg">{{ t('downloadSvg') }}</el-button>
-              <el-button type="warning" @click="downloadPng">{{ t('downloadPng') }}</el-button>
+              <el-button 
+                type="primary" 
+                @click="copySvgCode">
+                {{ t('copyCode') }}
+              </el-button>
+              <el-button 
+                type="success" 
+                @click="downloadSvg">
+                {{ t('downloadSvg') }}
+              </el-button>
+              <el-button 
+                type="warning" 
+                @click="downloadPng">
+                {{ t('downloadPng') }}
+              </el-button>
             </div>
           </div>
         </div>
@@ -952,11 +964,24 @@ const badgeSvg = computed(() => {
     });
   }
 
+  // 添加自定义文本段落
+  for (let i = 1; i <= 10; i++) {
+    const customText = badgeConfig.value[`customText${i}`]
+    if (customText) {
+      segments.push({
+        label: `自定义文本${i}`,
+        text: customText,
+        bgColor: segmentColors.value[`customText${i}`].bgColor,
+        textColor: segmentColors.value[`customText${i}`].textColor
+      })
+    }
+  }
+
   if (segments.length === 0) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><rect width="100" height="20" fill="#e0e0e0" rx="3"/><text x="50" y="15" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" fill="#666" text-anchor="middle">${t('emptyBadge')}</text></svg>`
   }
 
-  // 计算每个段落的宽度，确保文本有足够的空间显示
+  // 根据样式配置调整SVG生成
   let totalWidth = 0
   const segmentWidths = []
   
@@ -967,6 +992,39 @@ const badgeSvg = computed(() => {
     totalWidth += textWidth
   })
 
+  // 根据样式配置设置SVG属性
+  let rx = 3 // 默认圆角
+  let strokeWidth = 1 // 默认边框宽度
+  let strokeColor = 'rgba(0,0,0,0.1)' // 默认边框颜色
+  
+  // 根据徽章样式调整属性
+  switch (styleConfig.value.badgeStyle) {
+    case 'flat-square':
+      rx = 0
+      strokeWidth = 0
+      break
+    case 'plastic':
+      rx = 3
+      strokeWidth = 1
+      strokeColor = 'rgba(0,0,0,0.1)'
+      break
+    case 'for-the-badge':
+      rx = 3
+      strokeWidth = 0
+      // for-the-badge样式通常更高更粗
+      break
+    case 'social':
+      rx = 3
+      strokeWidth = 1
+      strokeColor = 'rgba(0,0,0,0.1)'
+      break
+    default:
+      // default样式
+      rx = 3
+      strokeWidth = 1
+      strokeColor = 'rgba(0,0,0,0.1)'
+  }
+
   // 生成SVG - 创建连接在一起的徽章段落
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20">`
   
@@ -976,7 +1034,7 @@ const badgeSvg = computed(() => {
     const width = segmentWidths[index]
     
     // 绘制背景矩形
-    svg += `<rect x="${currentX}" y="0" width="${width}" height="20" fill="${segment.bgColor}"/>`
+    svg += `<rect x="${currentX}" y="0" width="${width}" height="20" fill="${segment.bgColor}" rx="${rx}"/>`
     
     // 绘制文本，确保文本不会超出背景矩形的范围
     svg += `<text x="${currentX + width / 2}" y="15" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" fill="${segment.textColor}" text-anchor="middle">${segment.text}</text>`
@@ -986,7 +1044,9 @@ const badgeSvg = computed(() => {
   })
   
   // 绘制整体边框
-  svg += `<rect x="0" y="0" width="${totalWidth}" height="20" fill="none" stroke="rgba(0,0,0,0.1)" stroke-width="1" rx="3" ry="3"/>`
+  if (strokeWidth > 0) {
+    svg += `<rect x="0" y="0" width="${totalWidth}" height="20" fill="none" stroke="${strokeColor}" stroke-width="${strokeWidth}" rx="${rx}" ry="${rx}"/>`
+  }
   
   svg += '</svg>'
   
