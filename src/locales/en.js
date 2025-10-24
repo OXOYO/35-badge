@@ -37,6 +37,7 @@ export default {
   downloadSvg: 'Download SVG',
   downloadPng: 'Download PNG',
   emptyBadge: 'Please select configuration',
+  customText: 'Custom Text',
   
   // 页脚
   projectLink: 'Project Link',

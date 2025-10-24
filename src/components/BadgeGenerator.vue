@@ -292,29 +292,44 @@
             <h2>{{ t('customText') }}</h2>
             <div class="custom-text-section">
               <div 
-                v-for="i in 10" 
-                :key="i" 
+                v-for="(item, index) in customTexts" 
+                :key="index" 
                 class="option-group">
                 <div class="option-row">
-                  <label>{{ t('customText') }}{{ i }}:</label>
+                  <label>{{ t('customText') }}{{ index + 1 }}:</label>
                   <el-input 
-                    v-model="badgeConfig[`customText${i}`]" 
-                    :placeholder="`${t('customText')}${i}`"
+                    v-model="item.text" 
+                    :placeholder="`${t('customText')}${index + 1}`"
                     clearable
+                    maxlength="5"
+                    show-word-limit
                   ></el-input>
                   <el-color-picker 
-                    v-model="segmentColors[`customText${i}`].bgColor" 
+                    v-model="item.bgColor" 
                     :predefine="predefineColors"
-                    :disabled="!badgeConfig[`customText${i}`]"
-                    :value-on-clear="getDefaultCustomTextColors(i, 'bgColor')"
-                    @active-change="(color) => handleCustomTextColorChange(i, 'bgColor', color)" />
+                    :disabled="!item.text"
+                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'bgColor')"
+                    @active-change="(color) => handleCustomTextBgColorChange(index, color)" />
                   <el-color-picker 
-                    v-model="segmentColors[`customText${i}`].textColor" 
+                    v-model="item.textColor" 
                     :predefine="predefineColors"
-                    :disabled="!badgeConfig[`customText${i}`]"
-                    :value-on-clear="getDefaultCustomTextColors(i, 'textColor')"
-                    @active-change="(color) => handleCustomTextColorChange(i, 'textColor', color)" />
+                    :disabled="!item.text"
+                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'textColor')"
+                    @active-change="(color) => handleCustomTextColorChange(index, color)" />
+                  <el-button 
+                    v-if="customTexts.length > 1" 
+                    type="danger" 
+                    :icon="Delete" 
+                    @click="removeCustomText(index)" />
                 </div>
+              </div>
+              <div class="option-group">
+                <el-button 
+                  v-if="customTexts.length < 5" 
+                  type="primary" 
+                  :icon="Plus" 
+                  @click="addCustomText">
+                </el-button>
               </div>
             </div>
           </div>
@@ -381,6 +396,11 @@ import {
   EDUCATION_TYPE_OPTIONS
 } from '../constants/badgeOptions.js'
 
+import {
+  Delete,
+  Plus
+} from '@element-plus/icons-vue'
+
 // 注册 highlight.js 的 XML 语言支持
 hljs.registerLanguage('xml', xml)
 
@@ -409,10 +429,14 @@ const badgeConfig = ref({
   customText10: ''
 })
 
+// 自定义文本数组
+const customTexts = ref([
+  { text: '', bgColor: '#007ec6', textColor: '#fff' },
+])
 
 // 样式配置
 const styleConfig = ref({
-  badgeStyle: 'default'
+  badgeStyle: 'flat'
 })
 
 // 链接配置
@@ -447,46 +471,6 @@ const segmentColors = ref({
   salary: {
     bgColor: '#FFA500',
     textColor: '#000'
-  },
-  customText1: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText2: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText3: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText4: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText5: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText6: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText7: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText8: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText9: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  },
-  customText10: {
-    bgColor: '#007ec6',
-    textColor: '#fff'
   }
 })
 
@@ -595,6 +579,38 @@ const getDefaultCustomTextColors = (index, type) => {
   }
   
   return defaultColors[type]
+}
+
+// 添加自定义文本项
+const addCustomText = () => {
+  if (customTexts.value.length < 5) {
+    customTexts.value.push({ 
+      text: '', 
+      bgColor: '#007ec6', 
+      textColor: '#fff' 
+    })
+  }
+}
+
+// 删除自定义文本项
+const removeCustomText = (index) => {
+  if (customTexts.value.length > 1) {
+    customTexts.value.splice(index, 1)
+  }
+}
+
+// 处理自定义文本背景颜色变化
+const handleCustomTextBgColorChange = (index, color) => {
+  if (customTexts.value[index]) {
+    customTexts.value[index].bgColor = color
+  }
+}
+
+// 处理自定义文本文字颜色变化
+const handleCustomTextColorChange = (index, color) => {
+  if (customTexts.value[index]) {
+    customTexts.value[index].textColor = color
+  }
 }
 
 // 获取年薪的默认颜色
@@ -935,17 +951,16 @@ const badgeSvg = computed(() => {
   }
 
   // 添加自定义文本段落
-  for (let i = 1; i <= 10; i++) {
-    const customText = badgeConfig.value[`customText${i}`]
-    if (customText) {
+  customTexts.value.forEach((item, index) => {
+    if (item.text) {
       segments.push({
-        label: `自定义文本${i}`,
-        text: customText,
-        bgColor: segmentColors.value[`customText${i}`].bgColor,
-        textColor: segmentColors.value[`customText${i}`].textColor
+        label: `自定义文本${index + 1}`,
+        text: item.text,
+        bgColor: item.bgColor,
+        textColor: item.textColor
       })
     }
-  }
+  })
 
   if (segments.length === 0) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><rect width="100" height="20" fill="#e0e0e0" rx="3"/><text x="50" y="15" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" fill="#666" text-anchor="middle">${t('emptyBadge')}</text></svg>`
@@ -957,66 +972,136 @@ const badgeSvg = computed(() => {
   
   segments.forEach(segment => {
     // 使用getTextWidth计算文本宽度，并添加足够的padding确保文本不会被截断
-    const textWidth = getTextWidth(segment.text) + 10; // 增加更多padding确保文本完全显示
+    const textWidth = getTextWidth(segment.text, 11) + 10; // 增加更多padding确保文本完全显示
     segmentWidths.push(textWidth)
     totalWidth += textWidth
   })
 
   // 根据样式配置设置SVG属性
-  let rx = 3 // 默认圆角
-  let strokeWidth = 1 // 默认边框宽度
-  let strokeColor = 'rgba(0,0,0,0.1)' // 默认边框颜色
+  let height = 20 // 默认高度
+  let fontSize = 11 // 默认字体大小
+  let fontWeight = 'normal' // 默认字体粗细
+  let textY = 15 // 默认文本Y坐标
+  let useGradient = false // 是否使用渐变
+  let useShadow = false // 是否使用阴影
+  let crispEdges = false // 是否使用crispEdges渲染
+  let rx = 3 // 默认圆角半径
   
   // 根据徽章样式调整属性
   switch (styleConfig.value.badgeStyle) {
+    case 'flat':
+      height = 20
+      useGradient = true
+      useShadow = true
+      rx = 3
+      break
     case 'flat-square':
+      height = 20
+      crispEdges = true
       rx = 0
-      strokeWidth = 0
       break
     case 'plastic':
-      rx = 3
-      strokeWidth = 1
-      strokeColor = 'rgba(0,0,0,0.1)'
-      break
-    case 'for-the-badge':
-      rx = 3
-      strokeWidth = 0
-      // for-the-badge样式通常更高更粗
-      break
-    case 'social':
-      rx = 3
-      strokeWidth = 1
-      strokeColor = 'rgba(0,0,0,0.1)'
+      height = 18
+      useGradient = true
+      useShadow = true
+      rx = 4
       break
     default:
-      // default样式
+      // default样式与flat相同
+      height = 20
+      useGradient = true
+      useShadow = true
       rx = 3
-      strokeWidth = 1
-      strokeColor = 'rgba(0,0,0,0.1)'
   }
 
   // 生成SVG - 创建连接在一起的徽章段落
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="20">`
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}"`
+  
+  // 如果使用crispEdges渲染，添加shape-rendering属性
+  if (crispEdges) {
+    svg += ` shape-rendering="crispEdges"`
+  }
+  
+  svg += '>'
+
+  // 如果使用渐变，添加渐变定义
+  if (useGradient) {
+    svg += `<linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>`
+  }
+  
+  // 如果使用圆角或阴影，添加clipPath
+  if (rx > 0 || useShadow) {
+    svg += `<clipPath id="r">
+    <rect width="${totalWidth}" height="${height}" rx="${rx}" fill="#fff"/>
+  </clipPath>`
+  }
   
   // 绘制背景和文本作为一个整体，避免重叠
   let currentX = 0
+  
+  // 如果使用clipPath，将所有内容包装在g标签中
+  if (rx > 0 || useShadow) {
+    svg += '<g clip-path="url(#r)">'
+  }
+  
   segments.forEach((segment, index) => {
     const width = segmentWidths[index]
     
     // 绘制背景矩形
-    svg += `<rect x="${currentX}" y="0" width="${width}" height="20" fill="${segment.bgColor}" rx="${rx}"/>`
+    svg += `<rect x="${currentX}" y="0" width="${width}" height="${height}" fill="${segment.bgColor}"`
     
-    // 绘制文本，确保文本不会超出背景矩形的范围
-    svg += `<text x="${currentX + width / 2}" y="15" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" fill="${segment.textColor}" text-anchor="middle">${segment.text}</text>`
+    // 如果使用crispEdges，不需要额外属性
+    if (crispEdges) {
+      svg += '/>'
+    } else {
+      svg += '/>'
+    }
     
     // 更新下一个段落的起始位置
     currentX += width
   })
   
-  // 绘制整体边框
-  if (strokeWidth > 0) {
-    svg += `<rect x="0" y="0" width="${totalWidth}" height="20" fill="none" stroke="${strokeColor}" stroke-width="${strokeWidth}" rx="${rx}" ry="${rx}"/>`
+  // 如果使用渐变，绘制渐变层
+  if (useGradient) {
+    svg += `<rect width="${totalWidth}" height="${height}" fill="url(#s)"/>`
   }
+  
+  // 结束clipPath包装
+  if (rx > 0 || useShadow) {
+    svg += '</g>'
+  }
+  
+  // 绘制文本
+  svg += `<g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" text-rendering="geometricPrecision" font-size="${fontSize}0"`
+  
+  if (fontWeight !== 'normal') {
+    svg += ` font-weight="${fontWeight}"`
+  }
+  
+  svg += '>'
+
+  // 重置currentX以重新计算文本位置
+  currentX = 0
+  segments.forEach((segment, index) => {
+    const width = segmentWidths[index]
+    const textX = currentX + width / 2
+    
+    // 如果使用阴影效果，添加阴影文本
+    if (useShadow) {
+      svg += `<text aria-hidden="true" x="${textX * 10}" y="${textY * 10 + 10}" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${getTextWidth(segment.text, fontSize) * 10}">${segment.text}</text>`
+    }
+    
+    // 添加主文本
+    svg += `<text x="${textX * 10}" y="${textY * 10}" transform="scale(.1)" fill="${segment.textColor}" textLength="${getTextWidth(segment.text, fontSize) * 10}">${segment.text}</text>`
+    
+    // 更新下一个段落的起始位置
+    currentX += width
+  })
+  
+  svg += '</g>'
   
   svg += '</svg>'
   

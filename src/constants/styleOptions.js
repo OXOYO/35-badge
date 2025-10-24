@@ -2,12 +2,9 @@
 
 // 徽章样式选项
 export const BADGE_STYLES = [
-  { label: '默认样式', value: 'default', description: '默认徽章样式' },
   { label: '平面样式', value: 'flat', description: '扁平化设计样式' },
   { label: '平面方形', value: 'flat-square', description: '扁平化设计，无圆角' },
-  { label: '塑料样式', value: 'plastic', description: '塑料质感样式' },
-  { label: '社交样式', value: 'social', description: '社交按钮样式' },
-  { label: '.for-the-badge', value: 'for-the-badge', description: '大号徽章样式' }
+  { label: '塑料样式', value: 'plastic', description: '塑料质感样式' }
 ]
 
 // 徽章颜色选项
