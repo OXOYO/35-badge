@@ -248,29 +248,6 @@
                 </el-select>
               </div>
 
-              <div class="option-group">
-                <label>{{ t('colorPreset') }}:</label>
-                <el-select v-model="styleConfig.colorPreset" :placeholder="t('colorPreset')" clearable>
-                  <el-option
-                    v-for="item in badgeColors"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
-
-              <div class="option-group">
-                <label>{{ t('badgeAlignment') }}:</label>
-                <el-select v-model="styleConfig.alignment" :placeholder="t('badgeAlignment')">
-                  <el-option
-                    v-for="item in badgeAlignments"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </div>
             </div>
           </div>
 
@@ -351,7 +328,6 @@
             <h2>{{ t('previewTitle') }}</h2>
             <div class="badge-preview-container">
               <div class="badge-preview" 
-                   :style="{ textAlign: styleConfig.alignment }"
                    v-html="linkedBadgeSvg">
               </div>
             </div>
@@ -392,9 +368,7 @@ import { getTextWidth } from '../utils/textUtils.js'
 import { useI18n } from '../composables/useI18n.js'
 import {
   BADGE_STYLES,
-  BADGE_COLORS,
   LINK_TARGETS,
-  BADGE_ALIGNMENTS
 } from '../constants/styleOptions.js'
 import {
   AGE_OPTIONS,
@@ -438,9 +412,7 @@ const badgeConfig = ref({
 
 // 样式配置
 const styleConfig = ref({
-  badgeStyle: 'default',
-  colorPreset: '',
-  alignment: 'left'
+  badgeStyle: 'default'
 })
 
 // 链接配置
@@ -552,9 +524,7 @@ const salaryOptions = SALARY_OPTIONS
 
 // 样式选项
 const badgeStyles = BADGE_STYLES
-const badgeColors = BADGE_COLORS
 const linkTargets = LINK_TARGETS
-const badgeAlignments = BADGE_ALIGNMENTS
 
 
 // SVG 代码引用
@@ -981,7 +951,7 @@ const badgeSvg = computed(() => {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><rect width="100" height="20" fill="#e0e0e0" rx="3"/><text x="50" y="15" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" fill="#666" text-anchor="middle">${t('emptyBadge')}</text></svg>`
   }
 
-  // 根据样式配置调整SVG生成
+  // 计算每个段落的宽度，确保文本有足够的空间显示
   let totalWidth = 0
   const segmentWidths = []
   
