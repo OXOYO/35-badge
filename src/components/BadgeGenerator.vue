@@ -232,6 +232,53 @@
             </div>
           </div>
 
+          <!-- 自定义文本段 -->
+          <div class="section">
+            <h2>{{ t('customText') }}</h2>
+            <div class="custom-text-section">
+              <div 
+                v-for="(item, index) in customTexts" 
+                :key="index" 
+                class="option-group">
+                <div class="option-row">
+                  <label>{{ t('customText') }}{{ index + 1 }}:</label>
+                  <el-input 
+                    v-model="item.text" 
+                    :placeholder="`${t('customText')}${index + 1}`"
+                    clearable
+                    maxlength="5"
+                    show-word-limit
+                  ></el-input>
+                  <el-color-picker 
+                    v-model="item.bgColor" 
+                    :predefine="predefineColors"
+                    :disabled="!item.text"
+                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'bgColor')"
+                    @active-change="(color) => handleCustomTextBgColorChange(index, color)" />
+                  <el-color-picker 
+                    v-model="item.textColor" 
+                    :predefine="predefineColors"
+                    :disabled="!item.text"
+                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'textColor')"
+                    @active-change="(color) => handleCustomTextColorChange(index, color)" />
+                  <el-button 
+                    v-if="customTexts.length > 1" 
+                    type="danger" 
+                    :icon="Delete" 
+                    @click="removeCustomText(index)" />
+                </div>
+              </div>
+              <div class="option-group">
+                <el-button 
+                  v-if="customTexts.length < 5" 
+                  type="primary" 
+                  :icon="Plus" 
+                  @click="addCustomText">
+                </el-button>
+              </div>
+            </div>
+          </div>
+
           <!-- 样式设置 -->
           <div class="section">
             <h2>{{ t('styleSettings') }}</h2>
@@ -283,53 +330,6 @@
                   :placeholder="t('linkTitle')"
                   clearable
                 ></el-input>
-              </div>
-            </div>
-          </div>
-
-          <!-- 自定义文本段 -->
-          <div class="section">
-            <h2>{{ t('customText') }}</h2>
-            <div class="custom-text-section">
-              <div 
-                v-for="(item, index) in customTexts" 
-                :key="index" 
-                class="option-group">
-                <div class="option-row">
-                  <label>{{ t('customText') }}{{ index + 1 }}:</label>
-                  <el-input 
-                    v-model="item.text" 
-                    :placeholder="`${t('customText')}${index + 1}`"
-                    clearable
-                    maxlength="5"
-                    show-word-limit
-                  ></el-input>
-                  <el-color-picker 
-                    v-model="item.bgColor" 
-                    :predefine="predefineColors"
-                    :disabled="!item.text"
-                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'bgColor')"
-                    @active-change="(color) => handleCustomTextBgColorChange(index, color)" />
-                  <el-color-picker 
-                    v-model="item.textColor" 
-                    :predefine="predefineColors"
-                    :disabled="!item.text"
-                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'textColor')"
-                    @active-change="(color) => handleCustomTextColorChange(index, color)" />
-                  <el-button 
-                    v-if="customTexts.length > 1" 
-                    type="danger" 
-                    :icon="Delete" 
-                    @click="removeCustomText(index)" />
-                </div>
-              </div>
-              <div class="option-group">
-                <el-button 
-                  v-if="customTexts.length < 5" 
-                  type="primary" 
-                  :icon="Plus" 
-                  @click="addCustomText">
-                </el-button>
               </div>
             </div>
           </div>
@@ -1214,7 +1214,7 @@ const downloadPng = () => {
   flex: 1;
   min-width: 300px;
   position: sticky;
-  top: 0;
+  top: 140px;
 }
 
 .section {
@@ -1313,8 +1313,8 @@ const downloadPng = () => {
 /* 徽章选项样式 */
 .badge-option {
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 10px;
+  padding: 0 4px;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
   text-align: center;

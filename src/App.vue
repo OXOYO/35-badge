@@ -2,23 +2,16 @@
   <div id="app">
     <header class="header">
       <div class="header-content">
-        <h1>{{ t('projectTitle') }}</h1>
-        <p>{{ t('projectDescription') }}</p>
+        <div class="header-text">
+          <h1>{{ t('projectTitle') }}</h1>
+          <p>{{ t('projectDescription') }}</p>
+        </div>
         <div class="language-switch">
-          <el-button 
-            :type="currentLang === 'zh' ? 'primary' : 'default'" 
-            @click="switchLanguage('zh')"
-            size="small"
-          >
-            中文
-          </el-button>
-          <el-button 
-            :type="currentLang === 'en' ? 'primary' : 'default'" 
-            @click="switchLanguage('en')"
-            size="small"
-          >
-            English
-          </el-button>
+          <el-segmented
+            :model-value="currentLang"
+            :options="languageOptions"
+            @change="switchLanguage"
+          />
         </div>
       </div>
     </header>
@@ -33,7 +26,7 @@
       <div class="footer-content">
         <p>{{ t('projectLink') }}: 
           <el-link 
-            href="https://github.com/your-username/35-badge" 
+            href="https://github.com/OXOYO/35-badge" 
             target="_blank" 
             type="primary"
           >
@@ -49,11 +42,19 @@
 <script setup>
 import { useI18n } from './composables/useI18n.js'
 import BadgeGenerator from './components/BadgeGenerator.vue'
+import { computed } from 'vue'
 
 const { t, switchLanguage, currentLang } = useI18n()
+
+const languageOptions = computed(() => [
+  { label: '中文', value: 'zh' },
+  { label: 'English', value: 'en' }
+])
 </script>
 
 <style>
+@import './styles/variables.scss';
+
 * {
   margin: 0;
   padding: 0;
@@ -62,7 +63,9 @@ const { t, switchLanguage, currentLang } = useI18n()
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: #f5f5f5;
+  background-color: var(--background-color);
+  color: var(--text-color-primary);
+  line-height: 1.6;
 }
 
 #app {
@@ -72,60 +75,65 @@ body {
 }
 
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1rem 0;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background: var(--primary-gradient);
+  color: var(--text-color-primary);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
+  height: 100px;
   margin: 0 auto;
-  padding: 0 1rem;
-  text-align: center;
-  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+.header-text h1 {
+  font-size: 32px;
+  margin-bottom: 4px;
+  font-weight: 700;
 }
 
-.header p {
-  font-size: 1.2rem;
+.header-text p {
+  font-size: 16px;
   opacity: 0.9;
-  margin-bottom: 1rem;
+  color: var(--text-color-secondary);
+  margin: 0;
 }
 
 .language-switch {
-  position: absolute;
-  top: 0;
-  right: 1rem;
-  display: flex;
-  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-base);
+  padding: 4px;
 }
 
 .main {
   flex: 1;
-  padding: 2rem 0;
+  padding: 20px 0;
 }
 
 .content-wrapper {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 16px;
+  width: 100%;
 }
 
 .footer {
   background: #333;
   color: white;
-  padding: 2rem 0;
+  padding: 24px 0;
   text-align: center;
   margin-top: auto;
 }
 
 .footer-content p {
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 }
 
 .footer a {
@@ -138,18 +146,17 @@ body {
 }
 
 @media (max-width: 768px) {
-  .header h1 {
-    font-size: 2rem;
+  .header-content {
+    flex-direction: column;
+    text-align: center;
   }
   
-  .header p {
-    font-size: 1rem;
+  .header-text h1 {
+    font-size: 28px;
   }
   
-  .language-switch {
-    position: static;
-    justify-content: center;
-    margin-top: 1rem;
+  .main {
+    padding: 16px 0;
   }
 }
 </style>

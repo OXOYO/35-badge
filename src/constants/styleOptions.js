@@ -25,10 +25,10 @@ export const BADGE_COLORS = [
 
 // 链接目标选项
 export const LINK_TARGETS = [
-  { label: '_blank (新窗口)', value: '_blank' },
-  { label: '_self (当前窗口)', value: '_self' },
-  { label: '_parent (父窗口)', value: '_parent' },
-  { label: '_top (顶层窗口)', value: '_top' }
+  { label: '_blank', value: '_blank' },
+  { label: '_self', value: '_self' },
+  { label: '_parent', value: '_parent' },
+  { label: '_top', value: '_top' }
 ]
 
 // 徽章对齐选项
