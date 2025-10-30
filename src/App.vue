@@ -3,8 +3,11 @@
     <header class="header">
       <div class="header-content">
         <a class="header-text" href="/">
-          <!-- <h1>{{ t('projectTitle') }}</h1> -->
-          <img src="./assets/35-badge.svg" alt="35-Badge" />
+          <img
+            src="./assets/35-badge_100x40.svg"
+            alt="35-Badge"
+            style="width: 60px"
+          />
           <p>{{ t('projectDescription') }}</p>
         </a>
         <div class="language-switch">
