@@ -140,26 +140,15 @@ export const EDUCATION_OPTIONS = [
   { value: '双非', label: '双非', bgColor: '#808080', textColor: '#FFFFFF' },
   { value: '重本', label: '重本', bgColor: '#FF8C00', textColor: '#FFFFFF' },
   { value: '普本', label: '普本', bgColor: '#9370DB', textColor: '#FFFFFF' },
-  { value: '专升本', label: '专升本', bgColor: '#20B2AA', textColor: '#FFFFFF' }
-]
-
-// 培养模式类选项
-export const EDUCATION_MODE_OPTIONS = [
-  { value: '本硕', label: '本硕' },
-  { value: '本硕博', label: '本硕博' },
-  { value: '直博', label: '直博' },
-  { value: '硕博', label: '硕博' },
-  { value: '双学位', label: '双学位' },
-  { value: '联合培养', label: '联合培养' },
-  { value: '中外合作', label: '中外合作' }
-]
-
-// 纯度类选项
-export const EDUCATION_TYPE_OPTIONS = [
-  { value: '全日制', label: '全日制' },
-  { value: '非全日制', label: '非全日制' },
-  { value: '保研', label: '保研' },
-  { value: '考研', label: '考研' }
+  { value: '专升本', label: '专升本', bgColor: '#20B2AA', textColor: '#FFFFFF' },
+  // 培养模式类选项
+  { value: '本硕', label: '本硕', bgColor: '#FF6347', textColor: '#FFFFFF' },
+  { value: '本硕博', label: '本硕博', bgColor: '#FFD700', textColor: '#000000' },
+  { value: '直博', label: '直博', bgColor: '#FF8C00', textColor: '#FFFFFF' },
+  { value: '硕博', label: '硕博', bgColor: '#32CD32', textColor: '#FFFFFF' },
+  { value: '双学位', label: '双学位', bgColor: '#20B2AA', textColor: '#FFFFFF' },
+  { value: '联合培养', label: '联合培养', bgColor: '#20B2AA', textColor: '#FFFFFF' },
+  { value: '中外合作', label: '中外合作', bgColor: '#20B2AA', textColor: '#FFFFFF' }
 ]
 
 // 岗位选项配置
@@ -327,51 +316,107 @@ export const OVERTIME_STATUS_OPTIONS = [
 // 年薪选项配置（只保留关键节点值）
 export const SALARY_OPTIONS = [
   { 
-    value: 0, 
+    value: '0W', 
     label: '0W',
     bgColor: '#E0E0E0', // 浅灰色
     textColor: '#000000'
   },
   { 
-    value: 30, 
+    value: '30w', 
     label: '30W',
     bgColor: '#B0B0B0', // 中灰色
     textColor: '#000000'
   },
   { 
-    value: 50, 
+    value: '50w', 
     label: '50W',
     bgColor: '#909090', // 深灰色
     textColor: '#FFFFFF'
   },
   { 
-    value: 80, 
+    value: '80W', 
     label: '80W',
     bgColor: '#606060', // 更深的灰色
     textColor: '#FFFFFF'
   },
   { 
-    value: 100, 
+    value: '100W', 
     label: '100W',
     bgColor: '#404040', // 深灰
     textColor: '#FFFFFF'
   },
   { 
-    value: 150, 
+    value: '150W', 
     label: '150W',
     bgColor: '#000000', // 黑色
     textColor: '#FF0000' // 红色文字
   },
   { 
-    value: 200, 
+    value: '200W', 
     label: '200W',
     bgColor: '#808080', // 灰色
     textColor: '#FFFFFF'
   },
   { 
-    value: 999, 
+    value: '999W', 
     label: '财富自由',
     bgColor: '#FFD700', // 金色
     textColor: '#000000'
   }
+]
+
+
+// 预定义颜色
+export const PREDEFINE_COLORS = [
+  '#555',
+  '#007ec6',
+  '#4c1',
+  '#fe7d37',
+  '#97ca00',
+  '#e05d44',
+  '#800080',
+  '#e99695',
+  '#f0f0f0',
+  '#000'
+]
+
+// 默认颜色
+export const DEFAULT_COLORS = { bgColor: '#555', textColor: '#fff' }
+
+// 徽章样式选项
+export const BADGE_STYLES = [
+  { label: 'flat', value: 'flat', description: '扁平化设计样式' },
+  { label: 'flat-square', value: 'flat-square', description: '扁平化设计，无圆角' },
+  { label: 'plastic', value: 'plastic', description: '塑料质感样式' }
+]
+
+// 徽章颜色选项
+export const BADGE_COLORS = [
+  { label: '亮绿色', value: 'brightgreen', hex: '#4c1' },
+  { label: '绿色', value: 'green', hex: '#97ca00' },
+  { label: '黄绿色', value: 'yellowgreen', hex: '#a4a61d' },
+  { label: '黄色', value: 'yellow', hex: '#dfb317' },
+  { label: '橙黄色', value: 'orange', hex: '#fe7d37' },
+  { label: '橙色', value: 'red', hex: '#e05d44' },
+  { label: '红色', value: 'lightgrey', hex: '#9f9f9f' },
+  { label: '蓝色', value: 'blue', hex: '#007ec6' },
+  { label: '灰色', value: 'grey', hex: '#555' },
+  { label: '浅灰', value: 'lightgray', hex: '#9f9f9f' },
+  { label: '粉色', value: 'pink', hex: '#e99695' },
+  { label: '紫色', value: 'purple', hex: '#800080' }
+]
+
+// 链接目标选项
+export const LINK_TARGETS = [
+  { label: '_blank', value: '_blank' },
+  { label: '_self', value: '_self' },
+  { label: '_parent', value: '_parent' },
+  { label: '_top', value: '_top' }
+]
+
+// 徽章对齐选项
+export const BADGE_ALIGNMENTS = [
+  { label: '居左', value: 'left' },
+  { label: '居中', value: 'center' },
+  { label: '居右', value: 'right' }
 ]

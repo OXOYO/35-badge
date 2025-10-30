@@ -1,7 +1,7 @@
 export default {
   // 通用
   projectTitle: '35-Badge',
-  projectDescription: '创建类似 shields.io 的自定义徽章',
+  projectDescription: '创建您的个性徽章',
   success: '成功',
   reset: '重置',
   
@@ -33,7 +33,7 @@ export default {
   
   // 预览区域
   previewTitle: '徽章预览',
-  copySvg: '复制 SVG',
+  copySvgCode: '复制 SVG',
   downloadSvg: '下载 SVG',
   downloadPng: '下载 PNG',
   emptyBadge: '请选择配置',
@@ -41,5 +41,5 @@ export default {
   
   // 页脚
   projectLink: '项目链接',
-  githubRepo: 'GitHub 仓库'
+  githubRepo: 'GitHub'
 }

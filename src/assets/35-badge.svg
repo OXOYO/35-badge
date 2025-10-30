@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="20">
+    <linearGradient id="s" x2="0" y2="100%">
+        <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+        <stop offset="1" stop-opacity=".1"/>
+    </linearGradient>
+    <clipPath id="r">
+    <rect width="90" height="20" rx="3" fill="#fff"/>
+  </clipPath><g clip-path="url(#r)"><rect x="0" y="0" width="35" height="20" fill="#4169e1"/><rect x="35" y="0" width="55" height="20" fill="#000000"/><rect width="90" height="20" fill="url(#s)"/></g><g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" text-rendering="geometricPrecision" font-size="110"><text aria-hidden="true" x="175" y="160" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="250">35</text><text x="175" y="150" transform="scale(.1)" fill="#fff" textLength="250">35</text><text aria-hidden="true" x="625" y="160" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="450">Badge</text><text x="625" y="150" transform="scale(.1)" fill="#fff" textLength="450">Badge</text></g></svg>

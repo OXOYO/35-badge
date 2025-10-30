@@ -1,7 +1,7 @@
 export default {
   // 通用
   projectTitle: '35-Badge',
-  projectDescription: 'Create custom badges like shields.io',
+  projectDescription: 'Create your personalized badge',
   success: 'success',
   reset: 'Reset',
   
@@ -33,7 +33,7 @@ export default {
   
   // 预览区域
   previewTitle: 'Badge Preview',
-  copySvg: 'Copy SVG',
+  copySvgCode: 'Copy SVG',
   downloadSvg: 'Download SVG',
   downloadPng: 'Download PNG',
   emptyBadge: 'Please select configuration',
@@ -41,5 +41,5 @@ export default {
   
   // 页脚
   projectLink: 'Project Link',
-  githubRepo: 'GitHub Repository'
+  githubRepo: 'GitHub'
 }

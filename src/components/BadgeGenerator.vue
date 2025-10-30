@@ -8,17 +8,17 @@
           <div class="section">
             <h2>{{ t('formTitle') }}</h2>
             <div class="badge-options">
-              <!-- 年龄 -->
-              <div class="option-group">
+              <!-- 徽章配置 -->
+              <div v-for="(item, segment) in badgeConfig" :key="segment" class="option-group">
                 <div class="option-row">
-                  <label>{{ t('age') }}:</label>
+                  <label>{{ t(segment) }}:</label>
                   <el-radio-group 
-                    :model-value="badgeConfig.age">
+                    :model-value="item.value">
                     <el-radio 
-                      v-for="(option, index) in ageOptions" 
+                      v-for="(option, index) in OPTIONS_MAP[segment]" 
                       :key="index"
                       :value="option.value"
-                      @click="handleRadioClick('age', option.value)">
+                      @click="handleRadioClick(segment, option.value)">
                       <span 
                         class="badge-option" 
                         :style="{ backgroundColor: option.bgColor, color: option.textColor }">
@@ -26,207 +26,23 @@
                       </span>
                     </el-radio>
                   </el-radio-group>
+                  <el-input-number
+                    v-model="item.index"
+                    :min="1"
+                    :max="20"
+                    :disabled="item.value === ''"
+                    controls-position="right"
+                  />
                   <el-color-picker 
-                    v-model="segmentColors.age.bgColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.age"
-                    :value-on-clear="getOptionColor('age', 'bgColor')"
-                    @active-change="(color) => handleColorChange('age', 'bgColor', color)" />
+                    v-model="item.bgColor" 
+                    :predefine="PREDEFINE_COLORS"
+                    :disabled="item.value === ''"
+                    @active-change="(color) => handleColorChange(segment, 'bgColor', color)" />
                   <el-color-picker 
-                    v-model="segmentColors.age.textColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.age"
-                    :value-on-clear="getOptionColor('age', 'textColor')"
-                    @active-change="(color) => handleColorChange('age', 'textColor', color)" />
-                </div>
-              </div>
-
-              <!-- 学历 -->
-              <div class="option-group">
-                <div class="option-row">
-                  <label>{{ t('education') }}:</label>
-                  <el-radio-group 
-                    :model-value="badgeConfig.education">
-                    <el-radio 
-                      v-for="(option, index) in educationOptions" 
-                      :key="index"
-                      :value="option.value"
-                      @click="handleRadioClick('education', option.value)">
-                      <span 
-                        class="badge-option" 
-                        :style="{ backgroundColor: option.bgColor, color: option.textColor }">
-                        {{ option.label }}
-                      </span>
-                    </el-radio>
-                  </el-radio-group>
-                  <el-color-picker 
-                    v-model="segmentColors.education.bgColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.education"
-                    :value-on-clear="getOptionColor('education', 'bgColor')"
-                    @active-change="(color) => handleColorChange('education', 'bgColor', color)" />
-                  <el-color-picker 
-                    v-model="segmentColors.education.textColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.education"
-                    :value-on-clear="getOptionColor('education', 'textColor')"
-                    @active-change="(color) => handleColorChange('education', 'textColor', color)" />
-                </div>
-                
-                <!-- 本科及以上时显示额外选项 -->
-                <div v-if="showEducationDetails" class="education-details">
-                  <div class="checkbox-group">
-                    <label>学历详情:</label>
-                    <el-checkbox-group 
-                      v-model="combinedEducationDetails"
-                      @change="handleEducationDetailsChange">
-                      <el-checkbox 
-                        v-for="item in allEducationOptions" 
-                        :key="item.value" 
-                        :label="item.value">
-                        <span 
-                          class="badge-option"
-                          :style="{ 
-                            backgroundColor: getEducationOptionColor(item.value, 'bgColor'), 
-                            color: getEducationOptionColor(item.value, 'textColor') 
-                          }">
-                          {{ item.label }}
-                        </span>
-                      </el-checkbox>
-                    </el-checkbox-group>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 岗位 -->
-              <div class="option-group">
-                <div class="option-row">
-                  <label>{{ t('position') }}:</label>
-                  <el-radio-group 
-                    :model-value="badgeConfig.position">
-                    <el-radio 
-                      v-for="(option, index) in positionOptions" 
-                      :key="index"
-                      :value="option.value"
-                      @click="handleRadioClick('position', option.value)">
-                      <span 
-                        class="badge-option" 
-                        :style="{ backgroundColor: option.bgColor, color: option.textColor }">
-                        {{ option.label }}
-                      </span>
-                    </el-radio>
-                  </el-radio-group>
-                  <el-color-picker 
-                    v-model="segmentColors.position.bgColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.position"
-                    :value-on-clear="getOptionColor('position', 'bgColor')"
-                    @active-change="(color) => handleColorChange('position', 'bgColor', color)" />
-                  <el-color-picker 
-                    v-model="segmentColors.position.textColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.position"
-                    :value-on-clear="getOptionColor('position', 'textColor')"
-                    @active-change="(color) => handleColorChange('position', 'textColor', color)" />
-                </div>
-              </div>
-
-              <!-- 在职状态 -->
-              <div class="option-group">
-                <div class="option-row">
-                  <label>{{ t('employmentStatus') }}:</label>
-                  <el-radio-group 
-                    :model-value="badgeConfig.employmentStatus">
-                    <el-radio 
-                      v-for="(option, index) in employmentStatusOptions" 
-                      :key="index"
-                      :value="option.value"
-                      @click="handleRadioClick('employmentStatus', option.value)">
-                      <span 
-                        class="badge-option" 
-                        :style="{ backgroundColor: option.bgColor, color: option.textColor }">
-                        {{ option.label }}
-                      </span>
-                    </el-radio>
-                  </el-radio-group>
-                  <el-color-picker 
-                    v-model="segmentColors.employmentStatus.bgColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.employmentStatus"
-                    :value-on-clear="getOptionColor('employmentStatus', 'bgColor')"
-                    @active-change="(color) => handleColorChange('employmentStatus', 'bgColor', color)" />
-                  <el-color-picker 
-                    v-model="segmentColors.employmentStatus.textColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.employmentStatus"
-                    :value-on-clear="getOptionColor('employmentStatus', 'textColor')"
-                    @active-change="(color) => handleColorChange('employmentStatus', 'textColor', color)" />
-                </div>
-              </div>
-
-              <!-- 加班状态 -->
-              <div class="option-group">
-                <div class="option-row">
-                  <label>{{ t('overtimeStatus') }}:</label>
-                  <el-radio-group 
-                    :model-value="badgeConfig.overtimeStatus">
-                    <el-radio 
-                      v-for="(option, index) in overtimeStatusOptions" 
-                      :key="index"
-                      :value="option.value"
-                      @click="handleRadioClick('overtimeStatus', option.value)">
-                      <span 
-                        class="badge-option" 
-                        :style="{ backgroundColor: option.bgColor, color: option.textColor }">
-                        {{ option.label }}
-                      </span>
-                    </el-radio>
-                  </el-radio-group>
-                  <el-color-picker 
-                    v-model="segmentColors.overtimeStatus.bgColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.overtimeStatus"
-                    :value-on-clear="getOptionColor('overtimeStatus', 'bgColor')"
-                    @active-change="(color) => handleColorChange('overtimeStatus', 'bgColor', color)" />
-                  <el-color-picker 
-                    v-model="segmentColors.overtimeStatus.textColor" 
-                    :predefine="predefineColors"
-                    :disabled="!badgeConfig.overtimeStatus"
-                    :value-on-clear="getOptionColor('overtimeStatus', 'textColor')"
-                    @active-change="(color) => handleColorChange('overtimeStatus', 'textColor', color)" />
-                </div>
-              </div>
-
-              <!-- 年薪 -->
-              <div class="option-group">
-                <div class="option-row">
-                  <label>年薪:</label>
-                  <el-radio-group 
-                    :model-value="badgeConfig.salary">
-                    <el-radio 
-                      v-for="(option, index) in salaryOptions" 
-                      :key="index"
-                      :value="option.value"
-                      @click="handleSalaryClick(option.value)">
-                      <span 
-                        class="badge-option" 
-                        :style="{ backgroundColor: option.bgColor, color: option.textColor }">
-                        {{ option.label }}
-                      </span>
-                    </el-radio>
-                  </el-radio-group>
-                  <el-color-picker 
-                    v-model="segmentColors.salary.bgColor" 
-                    :predefine="predefineColors"
-                    :disabled="badgeConfig.salary === 0"
-                    :value-on-clear="getDefaultSalaryColor('bgColor')"
-                    @active-change="(color) => handleSalaryColorChange('bgColor', color)" />
-                  <el-color-picker 
-                    v-model="segmentColors.salary.textColor" 
-                    :predefine="predefineColors"
-                    :disabled="badgeConfig.salary === 0"
-                    :value-on-clear="getDefaultSalaryColor('textColor')"
-                    @active-change="(color) => handleSalaryColorChange('textColor', color)" />
+                    v-model="item.textColor" 
+                    :predefine="PREDEFINE_COLORS"
+                    :disabled="item.value === ''"
+                    @active-change="(color) => handleColorChange(segment, 'textColor', color)" />
                 </div>
               </div>
             </div>
@@ -249,18 +65,23 @@
                     maxlength="5"
                     show-word-limit
                   ></el-input>
+                  <el-input-number
+                    v-model="item.index"
+                    :min="1"
+                    :max="20"
+                    :disabled="item.value === ''"
+                    controls-position="right"
+                  />
                   <el-color-picker 
                     v-model="item.bgColor" 
-                    :predefine="predefineColors"
+                    :predefine="PREDEFINE_COLORS"
                     :disabled="!item.text"
-                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'bgColor')"
-                    @active-change="(color) => handleCustomTextBgColorChange(index, color)" />
+                    @active-change="(color) => handleCustomTextColorChange(index, 'bgColor', color)" />
                   <el-color-picker 
                     v-model="item.textColor" 
-                    :predefine="predefineColors"
+                    :predefine="PREDEFINE_COLORS"
                     :disabled="!item.text"
-                    :value-on-clear="getDefaultCustomTextColors(index + 1, 'textColor')"
-                    @active-change="(color) => handleCustomTextColorChange(index, color)" />
+                    @active-change="(color) => handleCustomTextColorChange(index, 'textColor', color)" />
                   <el-button 
                     v-if="customTexts.length > 1" 
                     type="danger" 
@@ -270,9 +91,10 @@
               </div>
               <div class="option-group">
                 <el-button 
-                  v-if="customTexts.length < 5" 
+                  v-if="customTexts.length < MAX_CUSTOM_TEXT_COUNT" 
                   type="primary" 
                   :icon="Plus" 
+                  style="width: 100%;"
                   @click="addCustomText">
                 </el-button>
               </div>
@@ -287,14 +109,13 @@
                 <label>{{ t('badgeStyle') }}:</label>
                 <el-select v-model="styleConfig.badgeStyle" :placeholder="t('badgeStyle')">
                   <el-option
-                    v-for="item in badgeStyles"
+                    v-for="item in BADGE_STYLES"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                   </el-option>
                 </el-select>
               </div>
-
             </div>
           </div>
 
@@ -315,7 +136,7 @@
                 <label>{{ t('linkTarget') }}:</label>
                 <el-select v-model="linkConfig.target" :placeholder="t('linkTarget')">
                   <el-option
-                    v-for="item in linkTargets"
+                    v-for="item in LINK_TARGETS"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -355,7 +176,7 @@
               <el-button 
                 type="primary" 
                 @click="copySvgCode">
-                {{ t('copyCode') }}
+                {{ t('copySvgCode') }}
               </el-button>
               <el-button 
                 type="success" 
@@ -376,15 +197,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import hljs from 'highlight.js/lib/core'
 import xml from 'highlight.js/lib/languages/xml'
 import { getTextWidth } from '../utils/textUtils.js'
 import { useI18n } from '../composables/useI18n.js'
-import {
-  BADGE_STYLES,
-  LINK_TARGETS,
-} from '../constants/styleOptions.js'
 import {
   AGE_OPTIONS,
   EDUCATION_OPTIONS,
@@ -392,8 +209,10 @@ import {
   EMPLOYMENT_STATUS_OPTIONS,
   OVERTIME_STATUS_OPTIONS,
   SALARY_OPTIONS,
-  EDUCATION_MODE_OPTIONS,
-  EDUCATION_TYPE_OPTIONS
+  PREDEFINE_COLORS,
+  DEFAULT_COLORS,
+  BADGE_STYLES,
+  LINK_TARGETS,
 } from '../constants/badgeOptions.js'
 
 import {
@@ -406,33 +225,62 @@ hljs.registerLanguage('xml', xml)
 
 const { t } = useI18n()
 
+// 选项集合
+const OPTIONS_MAP = {
+  age: AGE_OPTIONS,
+  education: EDUCATION_OPTIONS,
+  position: POSITION_OPTIONS,
+  employmentStatus: EMPLOYMENT_STATUS_OPTIONS,
+  overtimeStatus: OVERTIME_STATUS_OPTIONS,
+  salary: SALARY_OPTIONS
+}
+
 // 徽章配置
-const badgeConfig = ref({
-  age: '',
-  education: '',
-  position: '',
-  employmentStatus: '',
-  overtimeStatus: '',
-  salary: 0, // 年薪选项
-  universityLevel: [], // 学校级别选项
-  educationMode: [], // 培养模式选项
-  educationType: [], // 学习类型选项
-  customText: '',
-  customText2: '',
-  customText3: '',
-  customText4: '',
-  customText5: '',
-  customText6: '',
-  customText7: '',
-  customText8: '',
-  customText9: '',
-  customText10: ''
+const badgeConfig = reactive({
+  age: {
+    index: 0,
+    value: '',
+    bgColor: DEFAULT_COLORS.bgColor,
+    textColor: DEFAULT_COLORS.textColor,
+  },
+  education: {
+    index: 1,
+    value: '',
+    bgColor: DEFAULT_COLORS.bgColor,
+    textColor: DEFAULT_COLORS.textColor
+  },
+  position: {
+    index: 2,
+    value: '',
+    bgColor: DEFAULT_COLORS.bgColor,
+    textColor: DEFAULT_COLORS.textColor
+  },
+  employmentStatus: {
+    index: 3,
+    value: '',
+    bgColor: DEFAULT_COLORS.bgColor,
+    textColor: DEFAULT_COLORS.textColor
+  },
+  overtimeStatus: {
+    index: 4,
+    value: '',
+    bgColor: DEFAULT_COLORS.bgColor,
+    textColor: DEFAULT_COLORS.textColor
+  },
+  salary: {
+    index: 5,
+    value: '',
+    bgColor: DEFAULT_COLORS.bgColor,
+    textColor: DEFAULT_COLORS.textColor
+  },
 })
 
 // 自定义文本数组
 const customTexts = ref([
-  { text: '', bgColor: '#007ec6', textColor: '#fff' },
+  { index: 6, text: '', bgColor: '#007ec6', textColor: '#fff' },
 ])
+
+const MAX_CUSTOM_TEXT_COUNT = 5
 
 // 样式配置
 const styleConfig = ref({
@@ -446,148 +294,17 @@ const linkConfig = ref({
   title: ''
 })
 
-// 段落颜色配置
-const segmentColors = ref({
-  age: {
-    bgColor: '#555',
-    textColor: '#fff'
-  },
-  education: {
-    bgColor: '#4c1',
-    textColor: '#fff'
-  },
-  position: {
-    bgColor: '#fe7d37',
-    textColor: '#fff'
-  },
-  employmentStatus: {
-    bgColor: '#97ca00',
-    textColor: '#fff'
-  },
-  overtimeStatus: {
-    bgColor: '#e05d44',
-    textColor: '#fff'
-  },
-  salary: {
-    bgColor: '#FFA500',
-    textColor: '#000'
-  }
-})
-
-// 选项颜色映射
-const optionColorMap = {
-  age: AGE_OPTIONS,
-  education: EDUCATION_OPTIONS,
-  position: POSITION_OPTIONS,
-  employmentStatus: EMPLOYMENT_STATUS_OPTIONS,
-  overtimeStatus: OVERTIME_STATUS_OPTIONS
-}
-
-// 预定义颜色
-const predefineColors = [
-  '#555',
-  '#007ec6',
-  '#4c1',
-  '#fe7d37',
-  '#97ca00',
-  '#e05d44',
-  '#800080',
-  '#e99695',
-  '#f0f0f0',
-  '#000'
-]
-
-// 选项配置
-const ageOptions = AGE_OPTIONS
-const educationOptions = EDUCATION_OPTIONS
-const allEducationOptions = [...EDUCATION_MODE_OPTIONS, ...EDUCATION_TYPE_OPTIONS]
-const positionOptions = POSITION_OPTIONS
-const employmentStatusOptions = EMPLOYMENT_STATUS_OPTIONS
-const overtimeStatusOptions = OVERTIME_STATUS_OPTIONS
-const salaryOptions = SALARY_OPTIONS
-
-// 样式选项
-const badgeStyles = BADGE_STYLES
-const linkTargets = LINK_TARGETS
-
-
 // SVG 代码引用
 const svgCodeRef = ref(null)
 
-// 学历值到标签的映射
-const educationValueToLabel = {
-  'highSchool': '高中',
-  'associate': '大专',
-  'bachelor': '本科',
-  'master': '硕士',
-  'doctor': '博士'
-}
-
-// 判断是否显示学历详情选项（本科及以上）
-const showEducationDetails = computed(() => {
-  const higherEducationLevels = ['本科', '硕士', '博士']
-  const selectedEducation = badgeConfig.value.education
-  if (!selectedEducation) return false
-  
-  const selectedLabel = educationValueToLabel[selectedEducation]
-  return selectedLabel && higherEducationLevels.includes(selectedLabel)
-})
-
-// 学历详情计算属性（合并三个维度）
-const combinedEducationDetails = computed({
-  get() {
-    return [
-      ...badgeConfig.value.universityLevel,
-      ...badgeConfig.value.educationMode,
-      ...badgeConfig.value.educationType
-    ];
-  },
-  set(value) {
-    // 虽然值会通过handleEducationDetailsChange处理，但需要一个空的set方法
-    // 实际的处理逻辑在handleEducationDetailsChange中
-  }
-});
-
-// 获取选项颜色
-const getOptionColor = (segment, type) => {
-  const value = badgeConfig.value[segment]
-  if (value) {
-    const option = optionColorMap[segment].find(opt => opt.value === value)
-    if (option) {
-      return type === 'bgColor' ? option.bgColor : option.textColor
-    }
-  }
-  
-  // 默认颜色
-  const defaultColors = {
-    age: { bgColor: '#555', textColor: '#fff' },
-    education: { bgColor: '#4c1', textColor: '#fff' },
-    position: { bgColor: '#fe7d37', textColor: '#fff' },
-    employmentStatus: { bgColor: '#97ca00', textColor: '#fff' },
-    overtimeStatus: { bgColor: '#e05d44', textColor: '#fff' }
-  }
-  
-  return defaultColors[segment][type]
-}
-
-// 获取自定义文本的默认颜色
-const getDefaultCustomTextColors = (index, type) => {
-  // 默认颜色配置
-  const defaultColors = {
-    bgColor: '#007ec6',
-    textColor: '#fff'
-  }
-  
-  return defaultColors[type]
-}
-
 // 添加自定义文本项
 const addCustomText = () => {
-  if (customTexts.value.length < 5) {
-    customTexts.value.push({ 
+  if (customTexts.value.length < MAX_CUSTOM_TEXT_COUNT) {
+    customTexts.value.push({
+      index: customTexts.value.length + 6,
       text: '', 
-      bgColor: '#007ec6', 
-      textColor: '#fff' 
+      bgColor: DEFAULT_COLORS.bgColor, 
+      textColor: DEFAULT_COLORS.textColor
     })
   }
 }
@@ -599,261 +316,43 @@ const removeCustomText = (index) => {
   }
 }
 
-// 处理自定义文本背景颜色变化
-const handleCustomTextBgColorChange = (index, color) => {
-  if (customTexts.value[index]) {
-    customTexts.value[index].bgColor = color
-  }
-}
-
-// 处理自定义文本文字颜色变化
-const handleCustomTextColorChange = (index, color) => {
-  if (customTexts.value[index]) {
-    customTexts.value[index].textColor = color
-  }
-}
-
-// 获取年薪的默认颜色
-const getDefaultSalaryColor = (type) => {
-  // 默认颜色配置
-  const defaultColors = {
-    bgColor: '#FFA500',
-    textColor: '#000'
-  }
-  
-  return defaultColors[type]
-}
-
-// 处理年龄变化
-const handleAgeChange = (value) => {
-  if (value === 0) {
-    badgeConfig.value.age = ''
-    segmentColors.value.age.bgColor = '#555'
-    segmentColors.value.age.textColor = '#fff'
-  } else {
-    const selectedOption = ageOptions[value - 1]
-    if (selectedOption) {
-      badgeConfig.value.age = selectedOption.value
-      segmentColors.value.age.bgColor = selectedOption.bgColor
-      segmentColors.value.age.textColor = selectedOption.textColor
-    }
-  }
-}
-
-// 处理学历变化
-const handleEducationChange = (value) => {
-  if (!value) {
-    segmentColors.value.education.bgColor = '#4c1'
-    segmentColors.value.education.textColor = '#fff'
-  } else {
-    const selectedOption = educationOptions.find(opt => opt.value === value)
-    if (selectedOption) {
-      segmentColors.value.education.bgColor = selectedOption.bgColor
-      segmentColors.value.education.textColor = selectedOption.textColor
-    }
-  }
-}
-
-// 处理学历详情变化
-const handleEducationDetailsChange = (value) => {
-  // 重置所有学历详情选项
-  badgeConfig.value.universityLevel = [];
-  badgeConfig.value.educationMode = [];
-  badgeConfig.value.educationType = [];
-  
-  // 根据选中的值分类
-  value.forEach(item => {
-    // 检查培养模式选项
-    const educationModeOption = EDUCATION_MODE_OPTIONS.find(opt => opt.value === item);
-    if (educationModeOption) {
-      badgeConfig.value.educationMode.push(item);
-      return;
-    }
-    
-    // 检查学习类型选项
-    const educationTypeOption = EDUCATION_TYPE_OPTIONS.find(opt => opt.value === item);
-    if (educationTypeOption) {
-      badgeConfig.value.educationType.push(item);
-      return;
-    }
-    
-    // 其他选项（原UNIVERSITY_LEVEL_OPTIONS）直接添加到universityLevel
-    // 因为UNIVERSITY_LEVEL_OPTIONS已合并到EDUCATION_OPTIONS中
-    if (!educationModeOption && !educationTypeOption) {
-      badgeConfig.value.universityLevel.push(item);
-      return;
-    }
-  });
-};
-
-// 处理岗位变化
-const handlePositionChange = (value) => {
-  if (!value) {
-    segmentColors.value.position.bgColor = '#fe7d37'
-    segmentColors.value.position.textColor = '#fff'
-  } else {
-    const selectedOption = positionOptions.find(opt => opt.value === value)
-    if (selectedOption) {
-      segmentColors.value.position.bgColor = selectedOption.bgColor
-      segmentColors.value.position.textColor = selectedOption.textColor
-    }
-  }
-}
-
-// 处理在职状态变化
-const handleEmploymentStatusChange = (value) => {
-  if (!value) {
-    segmentColors.value.employmentStatus.bgColor = '#97ca00'
-    segmentColors.value.employmentStatus.textColor = '#fff'
-  } else {
-    const selectedOption = employmentStatusOptions.find(opt => opt.value === value)
-    if (selectedOption) {
-      segmentColors.value.employmentStatus.bgColor = selectedOption.bgColor
-      segmentColors.value.employmentStatus.textColor = selectedOption.textColor
-    }
-  }
-}
-
-// 处理加班状态变化
-const handleOvertimeStatusChange = (value) => {
-  if (!value) {
-    segmentColors.value.overtimeStatus.bgColor = '#e05d44'
-    segmentColors.value.overtimeStatus.textColor = '#fff'
-  } else {
-    const selectedOption = overtimeStatusOptions.find(opt => opt.value === value)
-    if (selectedOption) {
-      segmentColors.value.overtimeStatus.bgColor = selectedOption.bgColor
-      segmentColors.value.overtimeStatus.textColor = selectedOption.textColor
-    }
-  }
-}
-
-// 处理年薪变化
-const handleSalaryChange = (value) => {
-  // 如果当前已选中该选项，则取消选中
-  if (badgeConfig.value.salary === value) {
-    badgeConfig.value.salary = 0
-  }
-}
-
-// 处理年薪选项点击事件
-const handleSalaryClick = (value) => {
-  // 如果点击的是已选中的选项，则取消选中
-  if (badgeConfig.value.salary === value) {
-    badgeConfig.value.salary = 0
-  } else {
-    // 选中新选项
-    badgeConfig.value.salary = value
-  }
-}
-
-// 处理财富自由变化
-const handleFinancialFreedomChange = (value) => {
-  // 财富自由状态会在复选框变化时自动更新，因为是v-model绑定
-}
-
-// 处理选项变化
-const handleOptionChange = (segment, value) => {
-  // 如果值为空或者与当前值相同，则清空选择（实现取消选中功能）
-  if (!value || badgeConfig.value[segment] === value) {
-    badgeConfig.value[segment] = ''
-    // 重置颜色为默认值
-    const defaultColors = getDefaultColors(segment)
-    segmentColors.value[segment].bgColor = defaultColors.bgColor
-    segmentColors.value[segment].textColor = defaultColors.textColor
-  } else {
-    // 更新对应段落的颜色
-    const option = getOptionByValue(segment, value)
-    if (option) {
-      badgeConfig.value[segment] = value
-      segmentColors.value[segment].bgColor = option.bgColor
-      segmentColors.value[segment].textColor = option.textColor
-    }
-  }
-}
-
-// 切换单选按钮选择状态
-const toggleRadioSelection = (segment, value) => {
-  // 如果当前已选中该选项，则取消选中
-  if (badgeConfig.value[segment] === value) {
-    badgeConfig.value[segment] = ''
-    // 重置颜色为默认值
-    const defaultColors = getDefaultColors(segment)
-    segmentColors.value[segment].bgColor = defaultColors.bgColor
-    segmentColors.value[segment].textColor = defaultColors.textColor
-  }
+// 处理自定义文本颜色变化
+const handleCustomTextColorChange = (index, type, color) => {
+  customTexts.value[index][type] = color || DEFAULT_COLORS[type]
 }
 
 // 处理单选按钮点击事件
 const handleRadioClick = (segment, value) => {
   // 如果点击的是已选中的选项，则取消选中
-  if (badgeConfig.value[segment] === value) {
-    badgeConfig.value[segment] = ''
+  if (badgeConfig[segment].value === value) {
+    badgeConfig[segment].value = ''
     // 重置颜色为默认值
-    const defaultColors = getDefaultColors(segment)
-    segmentColors.value[segment].bgColor = defaultColors.bgColor
-    segmentColors.value[segment].textColor = defaultColors.textColor
+    badgeConfig[segment].bgColor = DEFAULT_COLORS.bgColor
+    badgeConfig[segment].textColor = DEFAULT_COLORS.textColor
   } else {
     // 选中新选项
-    const option = getOptionByValue(segment, value)
+    const option = OPTIONS_MAP[segment].find(opt => opt.value === value)
     if (option) {
-      badgeConfig.value[segment] = value
-      segmentColors.value[segment].bgColor = option.bgColor
-      segmentColors.value[segment].textColor = option.textColor
+      badgeConfig[segment].value = value
+      badgeConfig[segment].bgColor = option.bgColor
+      badgeConfig[segment].textColor = option.textColor
     }
   }
 }
 
-// 根据值获取选项
-const getOptionByValue = (segment, value) => {
-  switch (segment) {
-    case 'age':
-      return ageOptions.find(option => option.value === value)
-    case 'education':
-      return educationOptions.find(option => option.value === value)
-    case 'position':
-      return positionOptions.find(option => option.value === value)
-    case 'employmentStatus':
-      return employmentStatusOptions.find(option => option.value === value)
-    case 'overtimeStatus':
-      return overtimeStatusOptions.find(option => option.value === value)
-    default:
-      return null
-  }
-}
-
-// 获取默认颜色
-const getDefaultColors = (segment) => {
-  switch (segment) {
-    case 'age':
-      return { bgColor: '#555', textColor: '#fff' }
-    case 'education':
-      return { bgColor: '#4c1', textColor: '#fff' }
-    case 'position':
-      return { bgColor: '#fe7d37', textColor: '#fff' }
-    case 'employmentStatus':
-      return { bgColor: '#97ca00', textColor: '#fff' }
-    case 'overtimeStatus':
-      return { bgColor: '#e05d44', textColor: '#fff' }
-    default:
-      return { bgColor: '#555', textColor: '#fff' }
-  }
-}
-
-// 处理多选选项变化
-const handleMultiOptionChange = (segment, value) => {
-  // 移除限制，允许选择任意数量的选项
-  // 原代码: if (value && value.length > 3) { badgeConfig.value[segment] = value.slice(0, 3) }
-}
-
 // 处理颜色变化
 const handleColorChange = (segment, type, color) => {
-  // 使用 value-on-clear 属性处理清空操作，这里不需要特殊处理
-}
-
-// 处理年薪颜色变化
-const handleSalaryColorChange = (type, color) => {
-  // 使用 value-on-clear 属性处理清空操作，这里不需要特殊处理
+  if (color) {
+    return
+  }
+  const value = badgeConfig[segment].value
+  if (value !== '') {
+    const option = OPTIONS_MAP[segment].find(opt => opt.value === value)
+    if (option) {
+      color = option[type]
+    }
+  }
+  badgeConfig[segment][type] = color || DEFAULT_COLORS[type]
 }
 
 // 生成徽章SVG
@@ -861,106 +360,33 @@ const badgeSvg = computed(() => {
   // 构建活动段落
   const segments = []
   
-  if (badgeConfig.value.age) {
-    segments.push({
-      label: '年龄',
-      text: badgeConfig.value.age,
-      bgColor: segmentColors.value.age.bgColor,
-      textColor: segmentColors.value.age.textColor
-    })
-  }
-  
-  if (badgeConfig.value.education) {
-    segments.push({
-      label: '学历',
-      text: badgeConfig.value.education,
-      bgColor: segmentColors.value.education.bgColor,
-      textColor: segmentColors.value.education.textColor
-    })
-    
-    // 添加学历详情段落（将三个维度合并为一个段落）
-    const educationDetails = [];
-    
-    // 添加学校级别
-    if (badgeConfig.value.universityLevel && badgeConfig.value.universityLevel.length > 0) {
-      educationDetails.push(...badgeConfig.value.universityLevel);
-    }
-
-    // 添加培养模式
-    if (badgeConfig.value.educationMode && badgeConfig.value.educationMode.length > 0) {
-      educationDetails.push(...badgeConfig.value.educationMode);
-    }
-
-    // 添加学习类型
-    if (badgeConfig.value.educationType && badgeConfig.value.educationType.length > 0) {
-      educationDetails.push(...badgeConfig.value.educationType);
-    }
-
-    if (educationDetails.length > 0) {
+  Object.keys(badgeConfig).forEach(segment => {
+    if (badgeConfig[segment] && badgeConfig[segment].value !== '') {
       segments.push({
-        label: '学历详情',
-        text: educationDetails.join('+'),
-        bgColor: '#007ec6',
-        textColor: '#fff'
+        index: badgeConfig[segment].index,
+        label: segment,
+        text: badgeConfig[segment].value,
+        bgColor: badgeConfig[segment].bgColor,
+        textColor: badgeConfig[segment].textColor
       })
     }
-  }
-  
-  if (badgeConfig.value.position) {
-    segments.push({
-      label: '岗位',
-      text: badgeConfig.value.position,
-      bgColor: segmentColors.value.position.bgColor,
-      textColor: segmentColors.value.position.textColor
-    })
-  }
-  
-  if (badgeConfig.value.employmentStatus) {
-    segments.push({
-      label: '在职状态',
-      text: badgeConfig.value.employmentStatus,
-      bgColor: segmentColors.value.employmentStatus.bgColor,
-      textColor: segmentColors.value.employmentStatus.textColor
-    })
-  }
-  
-  if (badgeConfig.value.overtimeStatus) {
-    segments.push({
-      label: '加班状态',
-      text: badgeConfig.value.overtimeStatus,
-      bgColor: segmentColors.value.overtimeStatus.bgColor,
-      textColor: segmentColors.value.overtimeStatus.textColor
-    })
-  }
-
-  // 添加年薪段落
-  if (badgeConfig.value.salary === 999) {
-    segments.push({
-      label: '财富自由',
-      text: '财富自由',
-      bgColor: segmentColors.value.salary?.bgColor || '#FFD700',
-      textColor: segmentColors.value.salary?.textColor || '#000'
-    });
-  } else if (badgeConfig.value.salary > 0) {
-    segments.push({
-      label: '年薪',
-      text: `${badgeConfig.value.salary}W`,
-      bgColor: segmentColors.value.salary?.bgColor || '#FFA500',
-      textColor: segmentColors.value.salary?.textColor || '#000'
-    });
-  }
+  })
 
   // 添加自定义文本段落
-  customTexts.value.forEach((item, index) => {
+  customTexts.value.forEach((item) => {
     if (item.text) {
       segments.push({
-        label: `自定义文本${index + 1}`,
+        index: item.index,
+        label: item.text,
         text: item.text,
         bgColor: item.bgColor,
         textColor: item.textColor
       })
     }
   })
+
+  // 排序
+  segments.sort((a, b) => a.index - b.index)
 
   if (segments.length === 0) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><rect width="100" height="20" fill="#e0e0e0" rx="3"/><text x="50" y="15" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" fill="#666" text-anchor="middle">${t('emptyBadge')}</text></svg>`
@@ -1151,9 +577,9 @@ onMounted(() => {
 })
 
 // 复制SVG到剪贴板
-const copySvg = () => {
+const copySvgCode = () => {
   navigator.clipboard.writeText(badgeSvg.value)
-  ElMessage.success(t('copySvg') + ' ' + t('success'))
+  ElMessage.success(t('copySvgCode') + ' ' + t('success'))
 }
 
 // 下载SVG
@@ -1352,6 +778,7 @@ const downloadPng = () => {
 .badge-code-container pre {
   margin: 0;
   background: transparent;
+  white-space: nowrap;
 }
 
 .badge-actions {

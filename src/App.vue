@@ -2,15 +2,16 @@
   <div id="app">
     <header class="header">
       <div class="header-content">
-        <div class="header-text">
-          <h1>{{ t('projectTitle') }}</h1>
+        <a class="header-text" href="/">
+          <!-- <h1>{{ t('projectTitle') }}</h1> -->
+           <img src="./assets/35-badge.svg" alt="35-Badge" />
           <p>{{ t('projectDescription') }}</p>
-        </div>
+        </a>
         <div class="language-switch">
           <el-segmented
             :model-value="currentLang"
             :options="languageOptions"
-            @change="switchLanguage"
+            @change="onLanguageChange"
           />
         </div>
       </div>
@@ -26,7 +27,7 @@
       <div class="footer-content">
         <p>{{ t('projectLink') }}: 
           <el-link 
-            href="https://github.com/OXOYO/35-badge" 
+            :href="siteInfo.repository" 
             target="_blank" 
             type="primary"
           >
@@ -40,9 +41,10 @@
 </template>
 
 <script setup>
+import { computed, onMounted } from 'vue'
 import { useI18n } from './composables/useI18n.js'
 import BadgeGenerator from './components/BadgeGenerator.vue'
-import { computed } from 'vue'
+import { siteInfo } from './constants/config.js'
 
 const { t, switchLanguage, currentLang } = useI18n()
 
@@ -50,6 +52,16 @@ const languageOptions = computed(() => [
   { label: '中文', value: 'zh' },
   { label: 'English', value: 'en' }
 ])
+
+const onLanguageChange = (lang) => {
+  switchLanguage(lang)
+  window.document.title = t('projectDescription')
+}
+
+onMounted(() => {
+  window.document.title = t('projectDescription')
+})
+
 </script>
 
 <style>
@@ -104,6 +116,16 @@ body {
   opacity: 0.9;
   color: var(--text-color-secondary);
   margin: 0;
+}
+
+.header-text {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.header-text:hover {
+  text-decoration: none;
 }
 
 .language-switch {
