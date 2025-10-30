@@ -319,43 +319,61 @@ export const OVERTIME_STATUS_OPTIONS = [
   {
     value: '不加班',
     label: '不加班',
-    bgColor: '#98FB98', // 淡绿色
+    bgColor: '#98FB98', // 淡绿色，代表理想状态
     textColor: '#000000'
   },
   {
-    value: '8小时工作制',
+    value: '8小时',
     label: '8小时',
-    bgColor: '#87CEEB', // 天蓝色
+    bgColor: '#87CEEB', // 天蓝色，代表较理想状态
+    textColor: '#000000'
+  },
+  {
+    value: '965',
+    label: '965',
+    bgColor: '#00FF7F', // 绿色，正常的作息时间（早上9点上班晚上6点下班一周5天）
+    textColor: '#000000'
+  },
+  {
+    value: '1075',
+    label: '1075',
+    bgColor: '#87CEEB', // 天蓝色，较理想的作息时间
     textColor: '#000000'
   },
   {
     value: '995',
     label: '995',
-    bgColor: '#FFD700', // 金色
+    bgColor: '#FFD700', // 金色，开始有加班
     textColor: '#000000'
   },
   {
     value: '996',
     label: '996',
-    bgColor: '#FF8C00', // 深橙色
+    bgColor: '#FF8C00', // 深橙色，严重加班
     textColor: '#FFFFFF'
   },
   {
     value: '大小周',
     label: '大小周',
-    bgColor: '#DC143C', // 深红色
+    bgColor: '#DC143C', // 深红色，非常严重的加班
     textColor: '#FFFFFF'
   },
   {
     value: '1095',
     label: '1095',
-    bgColor: '#8B0000', // 深红色
+    bgColor: '#8B0000', // 深红，极度严重的加班
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '10106',
+    label: '10106',
+    bgColor: '#800000', // 暗红色，极度恶劣的加班
     textColor: '#FFFFFF'
   },
   {
     value: '007',
     label: '007',
-    bgColor: '#000000', // 黑色
+    bgColor: '#000000', // 黑色，最恶劣的加班状态
     textColor: '#FFFFFF'
   }
 ]
@@ -369,87 +387,93 @@ export const SALARY_OPTIONS = [
     textColor: '#000000'
   },
   {
-    value: '5W',
-    label: '5W',
-    bgColor: '#D0D0D0', // 稍深的灰色
+    value: '5K/M',
+    label: '5K/M',
+    bgColor: '#D0D0D0', // 浅灰色
     textColor: '#000000'
   },
   {
-    value: '10W',
-    label: '10W',
-    bgColor: '#C0C0C0', // 中灰色
+    value: '8K/M',
+    label: '8K/M',
+    bgColor: '#B0B0B0', // 浅灰色
     textColor: '#000000'
   },
   {
-    value: '20W',
-    label: '20W',
-    bgColor: '#B0B0B0', // 深一点的灰色
+    value: '1W/M',
+    label: '1W/M',
+    bgColor: '#90CAF9', // 浅蓝色
     textColor: '#000000'
   },
   {
-    value: '30W',
-    label: '30W',
-    bgColor: '#A0A0A0', // 较深灰色
+    value: '2W/M',
+    label: '2W/M',
+    bgColor: '#64B5F6', // 蓝色
+    textColor: '#000000'
+  },
+  {
+    value: '3W/M',
+    label: '3W/M',
+    bgColor: '#42A5F5', // 鲜蓝色
     textColor: '#FFFFFF'
   },
   {
-    value: '40W',
-    label: '40W',
-    bgColor: '#909090', // 深灰色
+    value: '5W/M',
+    label: '5W/M',
+    bgColor: '#2196F3', // 亮蓝色
     textColor: '#FFFFFF'
   },
   {
-    value: '50W',
-    label: '50W',
-    bgColor: '#808080', // 更深的灰色
+    value: '10W/M',
+    label: '10W/M',
+    bgColor: '#1976D2', // 深蓝色
     textColor: '#FFFFFF'
   },
   {
-    value: '60W',
-    label: '60W',
-    bgColor: '#707070', // 深灰
+    value: '20W/Y',
+    label: '20W/Y',
+    bgColor: '#66BB6A', // 绿色
     textColor: '#FFFFFF'
   },
   {
-    value: '70W',
-    label: '70W',
-    bgColor: '#606060', // 深灰
+    value: '30W/Y',
+    label: '30W/Y',
+    bgColor: '#4CAF50', // 鲜绿色
     textColor: '#FFFFFF'
   },
   {
-    value: '80W',
-    label: '80W',
-    bgColor: '#505050', // 更深的灰色
+    value: '40W/Y',
+    label: '40W/Y',
+    bgColor: '#43A047', // 亮绿色
     textColor: '#FFFFFF'
   },
   {
-    value: '90W',
-    label: '90W',
-    bgColor: '#404040', // 深灰
+    value: '50W/Y',
+    label: '50W/Y',
+    bgColor: '#388E3C', // 深绿色
     textColor: '#FFFFFF'
   },
   {
-    value: '100W',
-    label: '100W',
-    bgColor: '#303030', // 接近黑色的灰色
+    value: '70W/Y',
+    label: '70W/Y',
+    bgColor: '#2E7D32', // 更深的绿色
     textColor: '#FFFF00' // 黄色文字，突出显示
   },
   {
-    value: '120W',
-    label: '120W',
-    bgColor: '#202020', // 深灰
+    value: '100W/Y',
+    label: '100W/Y',
+    bgColor: '#1B5E20', // 深绿色
+    textColor: '#FFFF00' // 黄色文字，突出显示
+  },
+  {
+    value: '150W/Y',
+    label: '150W/Y',
+    bgColor: '#33691E', // 深绿色
     textColor: '#FFFF00' // 黄色文字
   },
   {
-    value: '150W',
-    label: '150W',
-    bgColor: '#101010', // 几乎黑色
-    textColor: '#FFFF00' // 黄色文字
-  },
-  {
-    value: '200W',
-    label: '200W',
-    bgColor: '#000000', // 纯黑色
+    value: '200W/Y',
+    label: '200W/Y',
+    bgColor: '#827717', // 深绿色
     textColor: '#FF0000' // 红色文字，突出显示
   },
   {
