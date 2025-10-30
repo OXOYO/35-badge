@@ -237,8 +237,8 @@ export const POSITION_OPTIONS = [
     textColor: '#FFFFFF'
   },
   {
-    value: '技术经理',
-    label: '技术经理',
+    value: '总监',
+    label: '总监',
     bgColor: '#8B008B', // 深洋红色
     textColor: '#FFFFFF'
   },
@@ -246,6 +246,18 @@ export const POSITION_OPTIONS = [
     value: 'CTO',
     label: 'CTO',
     bgColor: '#4B0082', // 靛蓝色
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '高管',
+    label: '高管',
+    bgColor: '#DC143C', // 深红色
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '老板',
+    label: '老板',
+    bgColor: '#000000', // 黑色
     textColor: '#FFFFFF'
   }
 ]
@@ -298,18 +310,6 @@ export const EMPLOYMENT_STATUS_OPTIONS = [
     value: '创业',
     label: '创业',
     bgColor: '#FF8C00', // 深橙色
-    textColor: '#FFFFFF'
-  },
-  {
-    value: '高管',
-    label: '高管',
-    bgColor: '#DC143C', // 深红色
-    textColor: '#FFFFFF'
-  },
-  {
-    value: '老板',
-    label: '老板',
-    bgColor: '#000000', // 黑色
     textColor: '#FFFFFF'
   }
 ]
