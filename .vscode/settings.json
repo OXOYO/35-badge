@@ -11,12 +11,11 @@
     "strings": "on"
   },
   // ESLint 配置
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "vue"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "vue"],
   "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
   // Prettier 配置
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -26,10 +25,11 @@
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // 禁用文件头部注释自动生成
+  "fileheader.configObj": {
+    "autoAdd": false
   },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "fileheader.cursorMode": {
+    "autoAdd": false
   }
 }
