@@ -3,80 +3,92 @@ export const AGE_OPTIONS = [
   {
     value: '18-',
     label: '18-',
-    bgColor: '#FFB6C1', // 粉红色，代表年轻
-    textColor: '#FFFFFF'
+    bgColor: '#E0E0E0', // 浅灰色，代表初入职场
+    textColor: '#000000'
   },
   {
     value: '18+',
     label: '18+',
-    bgColor: '#98FB98', // 淡绿色，代表青年
+    bgColor: '#C0C0C0', // 灰色，代表职场新人
     textColor: '#000000'
   },
   {
     value: '20+',
     label: '20+',
-    bgColor: '#87CEEB', // 天蓝色，代表壮年
+    bgColor: '#90CAF9', // 浅蓝色，代表成长期
     textColor: '#000000'
+  },
+  {
+    value: '25+',
+    label: '25+',
+    bgColor: '#42A5F5', // 蓝色，代表技术积累期
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '28+',
+    label: '28+',
+    bgColor: '#2196F3', // 亮蓝色，代表技术成熟期
+    textColor: '#FFFFFF'
   },
   {
     value: '30+',
     label: '30+',
-    bgColor: '#9370DB', // 中紫色
+    bgColor: '#1976D2', // 深蓝色，代表黄金年龄开始
     textColor: '#FFFFFF'
   },
   {
     value: '35+',
     label: '35+',
-    bgColor: '#4169E1', // 皇家蓝
+    bgColor: '#D32F2F', // 危险警告的红色，代表35岁职业危机
     textColor: '#FFFFFF'
   },
   {
     value: '40+',
     label: '40+',
-    bgColor: '#32CD32', // 酸橙绿
-    textColor: '#FFFFFF'
+    bgColor: '#BDBDBD', // 中灰色，代表转型期
+    textColor: '#000000'
   },
   {
     value: '45+',
     label: '45+',
-    bgColor: '#FFD700', // 金色
-    textColor: '#000000'
+    bgColor: '#9E9E9E', // 灰色，代表挑战期
+    textColor: '#FFFFFF'
   },
   {
     value: '50+',
     label: '50+',
-    bgColor: '#FF8C00', // 深橙色
+    bgColor: '#757575', // 深灰色，代表职业瓶颈
     textColor: '#FFFFFF'
   },
   {
     value: '60+',
     label: '60+',
-    bgColor: '#DC143C', // 深红色
+    bgColor: '#616161', // 更深的灰色，代表职业生涯后期
     textColor: '#FFFFFF'
   },
   {
     value: '70+',
     label: '70+',
-    bgColor: '#8B4513', // 棕色
+    bgColor: '#424242', // 深灰色，代表临近退休
     textColor: '#FFFFFF'
   },
   {
     value: '80+',
     label: '80+',
-    bgColor: '#2F4F4F', // 深石板灰
+    bgColor: '#212121', // 黑灰色，代表退休
     textColor: '#FFFFFF'
   },
   {
     value: '90+',
     label: '90+',
-    bgColor: '#000000', // 黑色
+    bgColor: '#000000', // 黑色，代表高龄
     textColor: '#FFFFFF'
   },
   {
     value: '100+',
     label: '100+',
-    bgColor: '#808080', // 灰色
-    textColor: '#FFFFFF'
+    bgColor: '#FFD700', // 金色，与财富自由保持一致
+    textColor: '#000000' // 黑色文字
   }
 ]
 
@@ -357,46 +369,100 @@ export const SALARY_OPTIONS = [
     textColor: '#000000'
   },
   {
-    value: '30w',
-    label: '30W',
-    bgColor: '#B0B0B0', // 中灰色
+    value: '5W',
+    label: '5W',
+    bgColor: '#D0D0D0', // 稍深的灰色
     textColor: '#000000'
   },
   {
-    value: '50w',
-    label: '50W',
+    value: '10W',
+    label: '10W',
+    bgColor: '#C0C0C0', // 中灰色
+    textColor: '#000000'
+  },
+  {
+    value: '20W',
+    label: '20W',
+    bgColor: '#B0B0B0', // 深一点的灰色
+    textColor: '#000000'
+  },
+  {
+    value: '30W',
+    label: '30W',
+    bgColor: '#A0A0A0', // 较深灰色
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '40W',
+    label: '40W',
     bgColor: '#909090', // 深灰色
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '50W',
+    label: '50W',
+    bgColor: '#808080', // 更深的灰色
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '60W',
+    label: '60W',
+    bgColor: '#707070', // 深灰
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '70W',
+    label: '70W',
+    bgColor: '#606060', // 深灰
     textColor: '#FFFFFF'
   },
   {
     value: '80W',
     label: '80W',
-    bgColor: '#606060', // 更深的灰色
+    bgColor: '#505050', // 更深的灰色
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '90W',
+    label: '90W',
+    bgColor: '#404040', // 深灰
     textColor: '#FFFFFF'
   },
   {
     value: '100W',
     label: '100W',
-    bgColor: '#404040', // 深灰
-    textColor: '#FFFFFF'
+    bgColor: '#303030', // 接近黑色的灰色
+    textColor: '#FFFF00' // 黄色文字，突出显示
+  },
+  {
+    value: '120W',
+    label: '120W',
+    bgColor: '#202020', // 深灰
+    textColor: '#FFFF00' // 黄色文字
   },
   {
     value: '150W',
     label: '150W',
-    bgColor: '#000000', // 黑色
-    textColor: '#FF0000' // 红色文字
+    bgColor: '#101010', // 几乎黑色
+    textColor: '#FFFF00' // 黄色文字
   },
   {
     value: '200W',
     label: '200W',
-    bgColor: '#808080', // 灰色
-    textColor: '#FFFFFF'
+    bgColor: '#000000', // 纯黑色
+    textColor: '#FF0000' // 红色文字，突出显示
   },
   {
-    value: '999W',
+    value: '财务自由',
+    label: '财务自由',
+    bgColor: '#000080', // 深蓝色
+    textColor: '#FFFF00' // 黄色文字
+  },
+  {
+    value: '财富自由',
     label: '财富自由',
     bgColor: '#FFD700', // 金色
-    textColor: '#000000'
+    textColor: '#000000' // 黑色文字
   }
 ]
 

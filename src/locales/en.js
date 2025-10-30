@@ -13,6 +13,7 @@ export default {
   position: 'Position',
   employmentStatus: 'Employment Status',
   overtimeStatus: 'Overtime Status',
+  salary: 'Salary',
   selectPlaceholder: 'Please select',
 
   // 颜色配置
