@@ -9,19 +9,27 @@
             <h2>{{ t('formTitle') }}</h2>
             <div class="badge-options">
               <!-- 徽章配置 -->
-              <div v-for="(item, segment) in badgeConfig" :key="segment" class="option-group">
+              <div
+                v-for="(item, segment) in badgeConfig"
+                :key="segment"
+                class="option-group"
+              >
                 <div class="option-row">
                   <label>{{ t(segment) }}:</label>
-                  <el-radio-group 
-                    :model-value="item.value">
-                    <el-radio 
-                      v-for="(option, index) in OPTIONS_MAP[segment]" 
+                  <el-radio-group :model-value="item.value">
+                    <el-radio
+                      v-for="(option, index) in OPTIONS_MAP[segment]"
                       :key="index"
                       :value="option.value"
-                      @click="handleRadioClick(segment, option.value)">
-                      <span 
-                        class="badge-option" 
-                        :style="{ backgroundColor: option.bgColor, color: option.textColor }">
+                      @click="handleRadioClick(segment, option.value)"
+                    >
+                      <span
+                        class="badge-option"
+                        :style="{
+                          backgroundColor: option.bgColor,
+                          color: option.textColor
+                        }"
+                      >
                         {{ option.label }}
                       </span>
                     </el-radio>
@@ -33,16 +41,22 @@
                     :disabled="item.value === ''"
                     controls-position="right"
                   />
-                  <el-color-picker 
-                    v-model="item.bgColor" 
+                  <el-color-picker
+                    v-model="item.bgColor"
                     :predefine="PREDEFINE_COLORS"
                     :disabled="item.value === ''"
-                    @active-change="(color) => handleColorChange(segment, 'bgColor', color)" />
-                  <el-color-picker 
-                    v-model="item.textColor" 
+                    @active-change="
+                      color => handleColorChange(segment, 'bgColor', color)
+                    "
+                  />
+                  <el-color-picker
+                    v-model="item.textColor"
                     :predefine="PREDEFINE_COLORS"
                     :disabled="item.value === ''"
-                    @active-change="(color) => handleColorChange(segment, 'textColor', color)" />
+                    @active-change="
+                      color => handleColorChange(segment, 'textColor', color)
+                    "
+                  />
                 </div>
               </div>
             </div>
@@ -52,14 +66,15 @@
           <div class="section">
             <h2>{{ t('customText') }}</h2>
             <div class="custom-text-section">
-              <div 
-                v-for="(item, index) in customTexts" 
-                :key="index" 
-                class="option-group">
+              <div
+                v-for="(item, index) in customTexts"
+                :key="index"
+                class="option-group"
+              >
                 <div class="option-row">
                   <label>{{ t('customText') }}{{ index + 1 }}:</label>
-                  <el-input 
-                    v-model="item.text" 
+                  <el-input
+                    v-model="item.text"
                     :placeholder="`${t('customText')}${index + 1}`"
                     clearable
                     maxlength="5"
@@ -72,30 +87,40 @@
                     :disabled="item.value === ''"
                     controls-position="right"
                   />
-                  <el-color-picker 
-                    v-model="item.bgColor" 
+                  <el-color-picker
+                    v-model="item.bgColor"
                     :predefine="PREDEFINE_COLORS"
                     :disabled="!item.text"
-                    @active-change="(color) => handleCustomTextColorChange(index, 'bgColor', color)" />
-                  <el-color-picker 
-                    v-model="item.textColor" 
+                    @active-change="
+                      color =>
+                        handleCustomTextColorChange(index, 'bgColor', color)
+                    "
+                  />
+                  <el-color-picker
+                    v-model="item.textColor"
                     :predefine="PREDEFINE_COLORS"
                     :disabled="!item.text"
-                    @active-change="(color) => handleCustomTextColorChange(index, 'textColor', color)" />
-                  <el-button 
-                    v-if="customTexts.length > 1" 
-                    type="danger" 
-                    :icon="Delete" 
-                    @click="removeCustomText(index)" />
+                    @active-change="
+                      color =>
+                        handleCustomTextColorChange(index, 'textColor', color)
+                    "
+                  />
+                  <el-button
+                    v-if="customTexts.length > 1"
+                    type="danger"
+                    :icon="Delete"
+                    @click="removeCustomText(index)"
+                  />
                 </div>
               </div>
               <div class="option-group">
-                <el-button 
-                  v-if="customTexts.length < MAX_CUSTOM_TEXT_COUNT" 
-                  type="primary" 
-                  :icon="Plus" 
-                  style="width: 100%;"
-                  @click="addCustomText">
+                <el-button
+                  v-if="customTexts.length < MAX_CUSTOM_TEXT_COUNT"
+                  type="primary"
+                  :icon="Plus"
+                  style="width: 100%"
+                  @click="addCustomText"
+                >
                 </el-button>
               </div>
             </div>
@@ -107,12 +132,16 @@
             <div class="style-options">
               <div class="option-group">
                 <label>{{ t('badgeStyle') }}:</label>
-                <el-select v-model="styleConfig.badgeStyle" :placeholder="t('badgeStyle')">
+                <el-select
+                  v-model="styleConfig.badgeStyle"
+                  :placeholder="t('badgeStyle')"
+                >
                   <el-option
                     v-for="item in BADGE_STYLES"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                  >
                   </el-option>
                 </el-select>
               </div>
@@ -125,8 +154,8 @@
             <div class="link-options">
               <div class="option-group">
                 <label>{{ t('linkUrl') }}:</label>
-                <el-input 
-                  v-model="linkConfig.url" 
+                <el-input
+                  v-model="linkConfig.url"
                   :placeholder="t('linkUrl')"
                   clearable
                 ></el-input>
@@ -134,20 +163,24 @@
 
               <div class="option-group">
                 <label>{{ t('linkTarget') }}:</label>
-                <el-select v-model="linkConfig.target" :placeholder="t('linkTarget')">
+                <el-select
+                  v-model="linkConfig.target"
+                  :placeholder="t('linkTarget')"
+                >
                   <el-option
                     v-for="item in LINK_TARGETS"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                  >
                   </el-option>
                 </el-select>
               </div>
 
               <div class="option-group">
                 <label>{{ t('linkTitle') }}:</label>
-                <el-input 
-                  v-model="linkConfig.title" 
+                <el-input
+                  v-model="linkConfig.title"
                   :placeholder="t('linkTitle')"
                   clearable
                 ></el-input>
@@ -163,29 +196,21 @@
           <div class="section">
             <h2>{{ t('previewTitle') }}</h2>
             <div class="badge-preview-container">
-              <div class="badge-preview" 
-                   v-html="linkedBadgeSvg">
-              </div>
+              <div class="badge-preview" v-html="linkedBadgeSvg"></div>
             </div>
-            
+
             <div class="badge-code-container">
               <pre><code ref="svgCodeRef" class="language-xml hljs" v-html="highlightedSvgCode"></code></pre>
             </div>
-            
+
             <div class="badge-actions">
-              <el-button 
-                type="primary" 
-                @click="copySvgCode">
+              <el-button type="primary" @click="copySvgCode">
                 {{ t('copySvgCode') }}
               </el-button>
-              <el-button 
-                type="success" 
-                @click="downloadSvg">
+              <el-button type="success" @click="downloadSvg">
                 {{ t('downloadSvg') }}
               </el-button>
-              <el-button 
-                type="warning" 
-                @click="downloadPng">
+              <el-button type="warning" @click="downloadPng">
                 {{ t('downloadPng') }}
               </el-button>
             </div>
@@ -212,13 +237,10 @@ import {
   PREDEFINE_COLORS,
   DEFAULT_COLORS,
   BADGE_STYLES,
-  LINK_TARGETS,
+  LINK_TARGETS
 } from '../constants/badgeOptions.js'
 
-import {
-  Delete,
-  Plus
-} from '@element-plus/icons-vue'
+import { Delete, Plus } from '@element-plus/icons-vue'
 
 // 注册 highlight.js 的 XML 语言支持
 hljs.registerLanguage('xml', xml)
@@ -241,7 +263,7 @@ const badgeConfig = reactive({
     index: 0,
     value: '',
     bgColor: DEFAULT_COLORS.bgColor,
-    textColor: DEFAULT_COLORS.textColor,
+    textColor: DEFAULT_COLORS.textColor
   },
   education: {
     index: 1,
@@ -272,12 +294,12 @@ const badgeConfig = reactive({
     value: '',
     bgColor: DEFAULT_COLORS.bgColor,
     textColor: DEFAULT_COLORS.textColor
-  },
+  }
 })
 
 // 自定义文本数组
 const customTexts = ref([
-  { index: 6, text: '', bgColor: '#007ec6', textColor: '#fff' },
+  { index: 6, text: '', bgColor: '#007ec6', textColor: '#fff' }
 ])
 
 const MAX_CUSTOM_TEXT_COUNT = 5
@@ -302,15 +324,15 @@ const addCustomText = () => {
   if (customTexts.value.length < MAX_CUSTOM_TEXT_COUNT) {
     customTexts.value.push({
       index: customTexts.value.length + 6,
-      text: '', 
-      bgColor: DEFAULT_COLORS.bgColor, 
+      text: '',
+      bgColor: DEFAULT_COLORS.bgColor,
       textColor: DEFAULT_COLORS.textColor
     })
   }
 }
 
 // 删除自定义文本项
-const removeCustomText = (index) => {
+const removeCustomText = index => {
   if (customTexts.value.length > 1) {
     customTexts.value.splice(index, 1)
   }
@@ -359,7 +381,7 @@ const handleColorChange = (segment, type, color) => {
 const badgeSvg = computed(() => {
   // 构建活动段落
   const segments = []
-  
+
   Object.keys(badgeConfig).forEach(segment => {
     if (badgeConfig[segment] && badgeConfig[segment].value !== '') {
       segments.push({
@@ -373,7 +395,7 @@ const badgeSvg = computed(() => {
   })
 
   // 添加自定义文本段落
-  customTexts.value.forEach((item) => {
+  customTexts.value.forEach(item => {
     if (item.text) {
       segments.push({
         index: item.index,
@@ -395,10 +417,10 @@ const badgeSvg = computed(() => {
   // 计算每个段落的宽度，确保文本有足够的空间显示
   let totalWidth = 0
   const segmentWidths = []
-  
+
   segments.forEach(segment => {
     // 使用getTextWidth计算文本宽度，并添加足够的padding确保文本不会被截断
-    const textWidth = getTextWidth(segment.text, 11) + 10; // 增加更多padding确保文本完全显示
+    const textWidth = getTextWidth(segment.text, 11) + 10 // 增加更多padding确保文本完全显示
     segmentWidths.push(textWidth)
     totalWidth += textWidth
   })
@@ -412,7 +434,7 @@ const badgeSvg = computed(() => {
   let useShadow = false // 是否使用阴影
   let crispEdges = false // 是否使用crispEdges渲染
   let rx = 3 // 默认圆角半径
-  
+
   // 根据徽章样式调整属性
   switch (styleConfig.value.badgeStyle) {
     case 'flat':
@@ -442,12 +464,12 @@ const badgeSvg = computed(() => {
 
   // 生成SVG - 创建连接在一起的徽章段落
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}"`
-  
+
   // 如果使用crispEdges渲染，添加shape-rendering属性
   if (crispEdges) {
     svg += ` shape-rendering="crispEdges"`
   }
-  
+
   svg += '>'
 
   // 如果使用渐变，添加渐变定义
@@ -457,56 +479,56 @@ const badgeSvg = computed(() => {
     <stop offset="1" stop-opacity=".1"/>
   </linearGradient>`
   }
-  
+
   // 如果使用圆角或阴影，添加clipPath
   if (rx > 0 || useShadow) {
     svg += `<clipPath id="r">
     <rect width="${totalWidth}" height="${height}" rx="${rx}" fill="#fff"/>
   </clipPath>`
   }
-  
+
   // 绘制背景和文本作为一个整体，避免重叠
   let currentX = 0
-  
+
   // 如果使用clipPath，将所有内容包装在g标签中
   if (rx > 0 || useShadow) {
     svg += '<g clip-path="url(#r)">'
   }
-  
+
   segments.forEach((segment, index) => {
     const width = segmentWidths[index]
-    
+
     // 绘制背景矩形
     svg += `<rect x="${currentX}" y="0" width="${width}" height="${height}" fill="${segment.bgColor}"`
-    
+
     // 如果使用crispEdges，不需要额外属性
     if (crispEdges) {
       svg += '/>'
     } else {
       svg += '/>'
     }
-    
+
     // 更新下一个段落的起始位置
     currentX += width
   })
-  
+
   // 如果使用渐变，绘制渐变层
   if (useGradient) {
     svg += `<rect width="${totalWidth}" height="${height}" fill="url(#s)"/>`
   }
-  
+
   // 结束clipPath包装
   if (rx > 0 || useShadow) {
     svg += '</g>'
   }
-  
+
   // 绘制文本
   svg += `<g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" text-rendering="geometricPrecision" font-size="${fontSize}0"`
-  
+
   if (fontWeight !== 'normal') {
     svg += ` font-weight="${fontWeight}"`
   }
-  
+
   svg += '>'
 
   // 重置currentX以重新计算文本位置
@@ -514,23 +536,23 @@ const badgeSvg = computed(() => {
   segments.forEach((segment, index) => {
     const width = segmentWidths[index]
     const textX = currentX + width / 2
-    
+
     // 如果使用阴影效果，添加阴影文本
     if (useShadow) {
       svg += `<text aria-hidden="true" x="${textX * 10}" y="${textY * 10 + 10}" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${getTextWidth(segment.text, fontSize) * 10}">${segment.text}</text>`
     }
-    
+
     // 添加主文本
     svg += `<text x="${textX * 10}" y="${textY * 10}" transform="scale(.1)" fill="${segment.textColor}" textLength="${getTextWidth(segment.text, fontSize) * 10}">${segment.text}</text>`
-    
+
     // 更新下一个段落的起始位置
     currentX += width
   })
-  
+
   svg += '</g>'
-  
+
   svg += '</svg>'
-  
+
   return svg
 })
 
@@ -599,12 +621,12 @@ const downloadPng = () => {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
   const img = new Image()
-  
+
   img.onload = () => {
     canvas.width = img.width
     canvas.height = img.height
     ctx.drawImage(img, 0, 0)
-    
+
     const pngUrl = canvas.toDataURL('image/png')
     const a = document.createElement('a')
     a.href = pngUrl
@@ -612,10 +634,9 @@ const downloadPng = () => {
     a.click()
     ElMessage.success(t('downloadPng') + ' ' + t('success'))
   }
-  
+
   img.src = 'data:image/svg+xml,' + encodeURIComponent(badgeSvg.value)
 }
-
 </script>
 
 <style scoped>
@@ -793,31 +814,31 @@ const downloadPng = () => {
   .badge-generator {
     padding: 10px;
   }
-  
+
   .style-options,
   .link-options,
   .custom-text-section {
     grid-template-columns: 1fr;
   }
-  
+
   .option-row {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .option-row label {
     min-width: auto;
     margin-bottom: 5px;
   }
-  
+
   .badge-preview-container {
     padding: 10px;
   }
-  
+
   .badge-actions {
     flex-direction: column;
   }
-  
+
   .badge-actions .el-button {
     width: 100%;
   }

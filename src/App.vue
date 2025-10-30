@@ -4,7 +4,7 @@
       <div class="header-content">
         <a class="header-text" href="/">
           <!-- <h1>{{ t('projectTitle') }}</h1> -->
-           <img src="./assets/35-badge.svg" alt="35-Badge" />
+          <img src="./assets/35-badge.svg" alt="35-Badge" />
           <p>{{ t('projectDescription') }}</p>
         </a>
         <div class="language-switch">
@@ -16,21 +16,18 @@
         </div>
       </div>
     </header>
-    
+
     <main class="main">
       <div class="content-wrapper">
         <BadgeGenerator />
       </div>
     </main>
-    
+
     <footer class="footer">
       <div class="footer-content">
-        <p>{{ t('projectLink') }}: 
-          <el-link 
-            :href="siteInfo.repository" 
-            target="_blank" 
-            type="primary"
-          >
+        <p>
+          {{ t('projectLink') }}:
+          <el-link :href="siteInfo.repository" target="_blank" type="primary">
             {{ t('githubRepo') }}
           </el-link>
         </p>
@@ -53,7 +50,7 @@ const languageOptions = computed(() => [
   { label: 'English', value: 'en' }
 ])
 
-const onLanguageChange = (lang) => {
+const onLanguageChange = lang => {
   switchLanguage(lang)
   window.document.title = t('projectDescription')
 }
@@ -61,7 +58,6 @@ const onLanguageChange = (lang) => {
 onMounted(() => {
   window.document.title = t('projectDescription')
 })
-
 </script>
 
 <style>
@@ -74,7 +70,9 @@ onMounted(() => {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color-primary);
   line-height: 1.6;
@@ -172,11 +170,11 @@ body {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .header-text h1 {
     font-size: 28px;
   }
-  
+
   .main {
     padding: 16px 0;
   }

@@ -1,13 +1,35 @@
 {
-    "editor.gotoLocation.alternativeDeclarationCommand": "editor.action.revealDefinition",
-    "editor.gotoLocation.alternativeDefinitionCommand": "editor.action.revealDefinition",
-    "editor.gotoLocation.alternativeTypeDefinitionCommand": "editor.action.revealDefinition",
-    "editor.selectionHighlight": false,
-    "files.autoSave": "onFocusChange",
-    "editor.suggest.snippetsPreventQuickSuggestions": false,
-    "editor.quickSuggestions": {
-        "other": "on",
-        "comments": "off",
-        "strings": "on"
-    }
+  "editor.gotoLocation.alternativeDeclarationCommand": "editor.action.revealDefinition",
+  "editor.gotoLocation.alternativeDefinitionCommand": "editor.action.revealDefinition",
+  "editor.gotoLocation.alternativeTypeDefinitionCommand": "editor.action.revealDefinition",
+  "editor.selectionHighlight": false,
+  "files.autoSave": "onFocusChange",
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "off",
+    "strings": "on"
+  },
+  // ESLint 配置
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+  "eslint.format.enable": true,
+  // Prettier 配置
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

@@ -9,15 +9,19 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver({
-        importStyle: "sass"
-      })],
+      resolvers: [
+        ElementPlusResolver({
+          importStyle: 'sass'
+        })
+      ]
     }),
     Components({
-      resolvers: [ElementPlusResolver({
-        importStyle: "sass"
-      })],
-    }),
+      resolvers: [
+        ElementPlusResolver({
+          importStyle: 'sass'
+        })
+      ]
+    })
   ],
   server: {
     port: 3000

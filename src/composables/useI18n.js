@@ -10,16 +10,16 @@ const languages = {
 const currentLanguage = ref('zh')
 
 export function useI18n() {
-  const t = (key) => {
+  const t = key => {
     return languages[currentLanguage.value][key] || key
   }
-  
-  const switchLanguage = (lang) => {
+
+  const switchLanguage = lang => {
     currentLanguage.value = lang
   }
-  
+
   const currentLang = computed(() => currentLanguage.value)
-  
+
   return {
     t,
     switchLanguage,
