@@ -9,8 +9,8 @@ export function getTextWidth(text, fontSize = 11) {
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d')
 
-  // 设置字体样式，使用与SVG中相同的字体
-  context.font = `${fontSize}px DejaVu Sans, sans-serif`
+  // 设置字体样式，使用等宽字体以确保字符间距一致
+  context.font = `${fontSize}px monospace`
 
   // 精确测量文本宽度
   const metrics = context.measureText(text)

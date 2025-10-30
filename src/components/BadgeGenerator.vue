@@ -411,7 +411,7 @@ const badgeSvg = computed(() => {
   segments.sort((a, b) => a.index - b.index)
 
   if (segments.length === 0) {
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><rect width="100" height="20" fill="#e0e0e0" rx="3"/><text x="50" y="15" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" fill="#666" text-anchor="middle">${t('emptyBadge')}</text></svg>`
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20"><rect width="100" height="20" fill="#e0e0e0" rx="3"/><text x="50" y="15" font-family="monospace" font-size="11" fill="#666" text-anchor="middle">${t('emptyBadge')}</text></svg>`
   }
 
   // 计算每个段落的宽度，确保文本有足够的空间显示
@@ -523,7 +523,7 @@ const badgeSvg = computed(() => {
   }
 
   // 绘制文本
-  svg += `<g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" text-rendering="geometricPrecision" font-size="${fontSize}0"`
+  svg += `<g fill="#fff" text-anchor="middle" font-family="monospace" text-rendering="geometricPrecision" font-size="${fontSize}0"`
 
   if (fontWeight !== 'normal') {
     svg += ` font-weight="${fontWeight}"`
