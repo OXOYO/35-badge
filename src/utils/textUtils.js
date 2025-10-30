@@ -5,112 +5,16 @@
  * @returns {number} 文本宽度（像素）
  */
 export function getTextWidth(text, fontSize = 11) {
-  // 这是一个近似计算，实际宽度可能因字体而异
-  // 假设使用的是DejaVu Sans字体
-  const charWidths = {
-    ' ': 3.5,
-    '!': 3.5,
-    '"': 4.5,
-    '#': 7,
-    $: 7,
-    '%': 10,
-    '&': 8,
-    "'": 3,
-    '(': 4,
-    ')': 4,
-    '*': 5,
-    '+': 7,
-    ',': 3.5,
-    '-': 4,
-    '.': 3.5,
-    '/': 5,
-    0: 6.5,
-    1: 6.5,
-    2: 6.5,
-    3: 6.5,
-    4: 6.5,
-    5: 6.5,
-    6: 6.5,
-    7: 6.5,
-    8: 6.5,
-    9: 6.5,
-    ':': 3.5,
-    ';': 3.5,
-    '<': 7,
-    '=': 7,
-    '>': 7,
-    '?': 6,
-    '@': 10,
-    A: 8,
-    B: 7.5,
-    C: 8,
-    D: 8.5,
-    E: 7,
-    F: 6.5,
-    G: 9,
-    H: 8.5,
-    I: 4,
-    J: 4,
-    K: 7.5,
-    L: 6.5,
-    M: 10,
-    N: 8.5,
-    O: 9,
-    P: 7,
-    Q: 9,
-    R: 8,
-    S: 7.5,
-    T: 7,
-    U: 8.5,
-    V: 7.5,
-    W: 11,
-    X: 7.5,
-    Y: 7.5,
-    Z: 7.5,
-    '[': 4,
-    '\\': 5,
-    ']': 4,
-    '^': 6,
-    _: 6.5,
-    '`': 4,
-    a: 6,
-    b: 6.5,
-    c: 5.5,
-    d: 6.5,
-    e: 6,
-    f: 4,
-    g: 6.5,
-    h: 6.5,
-    i: 3,
-    j: 3.5,
-    k: 6,
-    l: 3.5,
-    m: 10,
-    n: 6.5,
-    o: 6.5,
-    p: 6.5,
-    q: 6.5,
-    r: 4.5,
-    s: 5.5,
-    t: 4.5,
-    u: 6.5,
-    v: 6,
-    w: 9,
-    x: 6,
-    y: 6,
-    z: 5.5,
-    '{': 5,
-    '|': 3.5,
-    '}': 5,
-    '~': 7
-  }
+  // 创建离屏 canvas
+  const canvas = document.createElement('canvas')
+  const context = canvas.getContext('2d')
 
-  let width = 0
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i]
-    width += charWidths[char] || 7 // 默认字符宽度为7px
-  }
+  // 设置字体样式，使用与SVG中相同的字体
+  context.font = `${fontSize}px DejaVu Sans, sans-serif`
 
-  // 根据字体大小调整宽度
-  return Math.ceil(width * (fontSize / 11)) + 12 // 添加一些内边距
+  // 精确测量文本宽度
+  const metrics = context.measureText(text)
+
+  // 不添加额外的内边距，使文本紧密排列
+  return metrics.width
 }

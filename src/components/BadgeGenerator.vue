@@ -419,7 +419,7 @@ const badgeSvg = computed(() => {
   const segmentWidths = []
 
   segments.forEach(segment => {
-    // 使用getTextWidth计算文本宽度，并添加足够的padding确保文本不会被截断
+    // 计算文本宽度，并添加足够的padding确保文本不会被截断
     const textWidth = getTextWidth(segment.text, 11) + 10 // 增加更多padding确保文本完全显示
     segmentWidths.push(textWidth)
     totalWidth += textWidth
@@ -427,9 +427,9 @@ const badgeSvg = computed(() => {
 
   // 根据样式配置设置SVG属性
   let height = 20 // 默认高度
-  let fontSize = 11 // 默认字体大小
-  let fontWeight = 'normal' // 默认字体粗细
-  let textY = 15 // 默认文本Y坐标
+  const fontSize = 11 // 默认字体大小
+  const fontWeight = 'normal' // 默认字体粗细
+  const textY = 15 // 默认文本Y坐标
   let useGradient = false // 是否使用渐变
   let useShadow = false // 是否使用阴影
   let crispEdges = false // 是否使用crispEdges渲染
