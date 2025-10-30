@@ -4,7 +4,7 @@
       <div class="header-content">
         <a class="header-text" href="/">
           <img
-            src="./assets/35-badge_100x40.svg"
+            src="./assets/35-badge_80x40.svg"
             alt="35-Badge"
             style="width: 60px"
           />
