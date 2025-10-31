@@ -222,7 +222,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted, reactive, watch } from 'vue'
 import hljs from 'highlight.js/lib/core'
 import xml from 'highlight.js/lib/languages/xml'
 import { getTextWidth } from '../utils/textUtils.js'
@@ -241,6 +241,9 @@ import { Delete, Plus } from '@element-plus/icons-vue'
 hljs.registerLanguage('xml', xml)
 
 const { t } = useI18n()
+
+// 本地存储键名
+const STORAGE_KEY = 'badge-generator-config'
 
 // 徽章配置
 const badgeConfig = reactive({})
@@ -265,6 +268,74 @@ const linkConfig = ref({
 // SVG 代码引用
 const svgCodeRef = ref(null)
 
+// 保存配置到本地存储
+const saveConfigToLocalStorage = () => {
+  const config = {
+    badgeConfig: { ...badgeConfig },
+    customTexts: [...customTexts.value],
+    styleConfig: { ...styleConfig.value },
+    linkConfig: { ...linkConfig.value }
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(config))
+}
+
+// 从本地存储加载配置
+const loadConfigFromLocalStorage = () => {
+  try {
+    const storedConfig = localStorage.getItem(STORAGE_KEY)
+    if (storedConfig) {
+      const config = JSON.parse(storedConfig)
+
+      // 恢复徽章配置
+      if (config.badgeConfig) {
+        Object.keys(config.badgeConfig).forEach(key => {
+          if (!badgeConfig[key]) {
+            // 如果badgeConfig中不存在该键，则初始化它
+            badgeConfig[key] = {
+              index: Object.keys(badgeConfig).length + 1,
+              value: '',
+              bgColor: DEFAULT_COLORS.bgColor,
+              textColor: DEFAULT_COLORS.textColor
+            }
+          }
+
+          badgeConfig[key].value = config.badgeConfig[key].value || ''
+          badgeConfig[key].index =
+            config.badgeConfig[key].index || badgeConfig[key].index
+          badgeConfig[key].bgColor =
+            config.badgeConfig[key].bgColor || DEFAULT_COLORS.bgColor
+          badgeConfig[key].textColor =
+            config.badgeConfig[key].textColor || DEFAULT_COLORS.textColor
+        })
+      }
+
+      // 恢复自定义文本
+      if (config.customTexts) {
+        customTexts.value = config.customTexts.map(item => ({
+          index: item.index || 7,
+          text: item.text || '',
+          bgColor: item.bgColor || DEFAULT_COLORS.bgColor,
+          textColor: item.textColor || DEFAULT_COLORS.textColor
+        }))
+      }
+
+      // 恢复样式配置
+      if (config.styleConfig) {
+        styleConfig.value.badgeStyle = config.styleConfig.badgeStyle || 'flat'
+      }
+
+      // 恢复链接配置
+      if (config.linkConfig) {
+        linkConfig.value.url = config.linkConfig.url || ''
+        linkConfig.value.target = config.linkConfig.target || '_blank'
+        linkConfig.value.title = config.linkConfig.title || ''
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load config from localStorage:', error)
+  }
+}
+
 // 添加自定义文本项
 const addCustomText = () => {
   if (customTexts.value.length < MAX_CUSTOM_TEXT_COUNT) {
@@ -274,6 +345,7 @@ const addCustomText = () => {
       bgColor: DEFAULT_COLORS.bgColor,
       textColor: DEFAULT_COLORS.textColor
     })
+    saveConfigToLocalStorage()
   }
 }
 
@@ -281,12 +353,14 @@ const addCustomText = () => {
 const removeCustomText = index => {
   if (customTexts.value.length > 1) {
     customTexts.value.splice(index, 1)
+    saveConfigToLocalStorage()
   }
 }
 
 // 处理自定义文本颜色变化
 const handleCustomTextColorChange = (index, type, color) => {
   customTexts.value[index][type] = color || DEFAULT_COLORS[type]
+  saveConfigToLocalStorage()
 }
 
 // 处理单选按钮点击事件
@@ -306,22 +380,34 @@ const handleRadioClick = (segment, value) => {
       badgeConfig[segment].textColor = option.textColor
     }
   }
+  saveConfigToLocalStorage()
 }
 
 // 处理颜色变化
 const handleColorChange = (segment, type, color) => {
   if (color) {
-    return
-  }
-  const value = badgeConfig[segment].value
-  if (value !== '') {
-    const option = OPTIONS_MAP[segment].find(opt => opt.value === value)
-    if (option) {
-      color = option[type]
+    badgeConfig[segment][type] = color
+  } else {
+    const value = badgeConfig[segment].value
+    if (value !== '') {
+      const option = OPTIONS_MAP[segment].find(opt => opt.value === value)
+      if (option) {
+        color = option[type]
+      }
     }
+    badgeConfig[segment][type] = color || DEFAULT_COLORS[type]
   }
-  badgeConfig[segment][type] = color || DEFAULT_COLORS[type]
+  saveConfigToLocalStorage()
 }
+
+// 监听配置变化并保存到本地存储
+watch(
+  [badgeConfig, customTexts, styleConfig, linkConfig],
+  () => {
+    saveConfigToLocalStorage()
+  },
+  { deep: true }
+)
 
 // 生成徽章SVG
 const badgeSvg = computed(() => {
@@ -543,18 +629,14 @@ const highlightedSvgCode = computed(() => {
 })
 
 onMounted(() => {
-  // 初始化配置数据
-  Object.keys(OPTIONS_MAP).forEach((key, index) => {
-    badgeConfig[key] = {
-      index: index + 1,
-      value: '',
-      bgColor: DEFAULT_COLORS.bgColor,
-      textColor: DEFAULT_COLORS.textColor
-    }
-  })
+  // 从本地存储加载配置（包括初始化）
+  loadConfigFromLocalStorage()
+
+  // 只有在customTexts为空时才添加默认项
   if (!customTexts.value.length) {
     addCustomText()
   }
+
   // 高亮代码
   if (svgCodeRef.value) {
     hljs.highlightElement(svgCodeRef.value)
