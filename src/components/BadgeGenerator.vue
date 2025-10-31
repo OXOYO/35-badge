@@ -285,10 +285,9 @@ const loadConfigFromLocalStorage = () => {
     const storedConfig = localStorage.getItem(STORAGE_KEY)
     if (storedConfig) {
       const config = JSON.parse(storedConfig)
-
       // 恢复徽章配置
       if (config.badgeConfig) {
-        Object.keys(config.badgeConfig).forEach(key => {
+        Object.keys(OPTIONS_MAP).forEach(key => {
           if (!badgeConfig[key]) {
             // 如果badgeConfig中不存在该键，则初始化它
             badgeConfig[key] = {
@@ -330,6 +329,18 @@ const loadConfigFromLocalStorage = () => {
         linkConfig.value.target = config.linkConfig.target || '_blank'
         linkConfig.value.title = config.linkConfig.title || ''
       }
+    } else {
+      Object.keys(OPTIONS_MAP).forEach(key => {
+        if (!badgeConfig[key]) {
+          // 如果badgeConfig中不存在该键，则初始化它
+          badgeConfig[key] = {
+            index: Object.keys(badgeConfig).length + 1,
+            value: '',
+            bgColor: DEFAULT_COLORS.bgColor,
+            textColor: DEFAULT_COLORS.textColor
+          }
+        }
+      })
     }
   } catch (error) {
     console.error('Failed to load config from localStorage:', error)
