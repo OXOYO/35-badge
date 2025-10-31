@@ -666,7 +666,7 @@ const downloadSvg = () => {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = 'badge.svg'
+  a.download = '35-badge.svg'
   a.click()
   URL.revokeObjectURL(url)
   ElMessage.success(t('downloadSvg') + ' ' + t('success'))
@@ -686,7 +686,7 @@ const downloadPng = () => {
     const pngUrl = canvas.toDataURL('image/png')
     const a = document.createElement('a')
     a.href = pngUrl
-    a.download = 'badge.png'
+    a.download = '35-badge.png'
     a.click()
     ElMessage.success(t('downloadPng') + ' ' + t('success'))
   }
