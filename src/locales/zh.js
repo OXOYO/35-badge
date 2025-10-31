@@ -42,6 +42,5 @@ export default {
   customText: '自定义文本',
 
   // 页脚
-  projectLink: '项目链接',
-  githubRepo: 'GitHub'
+  github: 'GitHub'
 }

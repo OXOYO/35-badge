@@ -29,12 +29,14 @@
     <footer class="footer">
       <div class="footer-content">
         <p>
-          {{ t('projectLink') }}:
-          <el-link :href="siteInfo.repository" target="_blank" type="primary">
-            {{ t('githubRepo') }}
+          <el-link :href="siteInfo.github" target="_blank" type="primary">
+            {{ t('github') }}
           </el-link>
         </p>
-        <p>© {{ new Date().getFullYear() }} 35-Badge. All rights reserved.</p>
+        <p>
+          © {{ new Date().getFullYear() }} {{ siteInfo.appName }}. All rights
+          reserved.
+        </p>
       </div>
     </footer>
   </div>
@@ -55,11 +57,11 @@ const languageOptions = computed(() => [
 
 const onLanguageChange = lang => {
   switchLanguage(lang)
-  window.document.title = t('projectDescription')
+  window.document.title = `${t('projectTitle')} - ${t('projectDescription')}`
 }
 
 onMounted(() => {
-  window.document.title = t('projectDescription')
+  window.document.title = `${t('projectTitle')} - ${t('projectDescription')}`
 })
 </script>
 
