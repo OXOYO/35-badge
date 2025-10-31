@@ -5,7 +5,7 @@ export const siteInfo = {
   version,
   author: 'OXOYO',
   authorLink: 'https://github.com/OXOYO',
-  homepage: 'http://35.oxoyo.co/',
+  homepage: 'https://35-badge.oxoyo.co',
   github: 'https://github.com/OXOYO/35-badge',
   repository: 'OXOYO/35-badge',
   email: 'zmn2007.hi@163.com'

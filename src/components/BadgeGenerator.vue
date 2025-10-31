@@ -34,29 +34,32 @@
                       </span>
                     </el-radio>
                   </el-radio-group>
-                  <el-input-number
-                    v-model="item.index"
-                    :min="1"
-                    :max="20"
-                    :disabled="item.value === ''"
-                    controls-position="right"
-                  />
-                  <el-color-picker
-                    v-model="item.bgColor"
-                    :predefine="PREDEFINE_COLORS"
-                    :disabled="item.value === ''"
-                    @active-change="
-                      color => handleColorChange(segment, 'bgColor', color)
-                    "
-                  />
-                  <el-color-picker
-                    v-model="item.textColor"
-                    :predefine="PREDEFINE_COLORS"
-                    :disabled="item.value === ''"
-                    @active-change="
-                      color => handleColorChange(segment, 'textColor', color)
-                    "
-                  />
+                  <div class="option-style">
+                    <el-input-number
+                      v-model="item.index"
+                      :min="1"
+                      :max="20"
+                      :disabled="item.value === ''"
+                      controls-position="right"
+                      style="width: 80px"
+                    />
+                    <el-color-picker
+                      v-model="item.bgColor"
+                      :predefine="PREDEFINE_COLORS"
+                      :disabled="item.value === ''"
+                      @active-change="
+                        color => handleColorChange(segment, 'bgColor', color)
+                      "
+                    />
+                    <el-color-picker
+                      v-model="item.textColor"
+                      :predefine="PREDEFINE_COLORS"
+                      :disabled="item.value === ''"
+                      @active-change="
+                        color => handleColorChange(segment, 'textColor', color)
+                      "
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -80,49 +83,52 @@
                     maxlength="5"
                     show-word-limit
                   ></el-input>
-                  <el-input-number
-                    v-model="item.index"
-                    :min="1"
-                    :max="20"
-                    :disabled="!item.text"
-                    controls-position="right"
-                  />
-                  <el-color-picker
-                    v-model="item.bgColor"
-                    :predefine="PREDEFINE_COLORS"
-                    :disabled="!item.text"
-                    @active-change="
-                      color =>
-                        handleCustomTextColorChange(index, 'bgColor', color)
-                    "
-                  />
-                  <el-color-picker
-                    v-model="item.textColor"
-                    :predefine="PREDEFINE_COLORS"
-                    :disabled="!item.text"
-                    @active-change="
-                      color =>
-                        handleCustomTextColorChange(index, 'textColor', color)
-                    "
-                  />
-                  <el-button
-                    v-if="customTexts.length > 1"
-                    type="danger"
-                    :icon="Delete"
-                    @click="removeCustomText(index)"
-                  />
+                  <div class="option-style">
+                    <el-input-number
+                      v-model="item.index"
+                      :min="1"
+                      :max="20"
+                      :disabled="!item.text"
+                      controls-position="right"
+                      style="width: 80px"
+                    />
+                    <el-color-picker
+                      v-model="item.bgColor"
+                      :predefine="PREDEFINE_COLORS"
+                      :disabled="!item.text"
+                      @active-change="
+                        color =>
+                          handleCustomTextColorChange(index, 'bgColor', color)
+                      "
+                    />
+                    <el-color-picker
+                      v-model="item.textColor"
+                      :predefine="PREDEFINE_COLORS"
+                      :disabled="!item.text"
+                      @active-change="
+                        color =>
+                          handleCustomTextColorChange(index, 'textColor', color)
+                      "
+                    />
+                    <el-button
+                      v-if="customTexts.length > 1"
+                      type="danger"
+                      :icon="Delete"
+                      @click="removeCustomText(index)"
+                    />
+                  </div>
                 </div>
               </div>
-              <div class="option-group">
-                <el-button
-                  v-if="customTexts.length < MAX_CUSTOM_TEXT_COUNT"
-                  type="primary"
-                  :icon="Plus"
-                  style="width: 100%"
-                  @click="addCustomText"
-                >
-                </el-button>
-              </div>
+            </div>
+            <div class="option-group">
+              <el-button
+                v-if="customTexts.length < MAX_CUSTOM_TEXT_COUNT"
+                type="primary"
+                :icon="Plus"
+                style="width: 100%"
+                @click="addCustomText"
+              >
+              </el-button>
             </div>
           </div>
 
@@ -204,13 +210,13 @@
             </div>
 
             <div class="badge-actions">
-              <el-button type="primary" @click="copySvgCode">
+              <el-button class="action-btn" type="primary" @click="copySvgCode">
                 {{ t('copySvgCode') }}
               </el-button>
-              <el-button type="success" @click="downloadSvg">
+              <el-button class="action-btn" type="success" @click="downloadSvg">
                 {{ t('downloadSvg') }}
               </el-button>
-              <el-button type="warning" @click="downloadPng">
+              <el-button class="action-btn" type="warning" @click="downloadPng">
                 {{ t('downloadPng') }}
               </el-button>
             </div>
@@ -758,6 +764,15 @@ const downloadPng = () => {
   min-width: 80px;
 }
 
+.option-row .option-style {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
 .education-details {
   margin-top: 10px;
   padding: 10px;
@@ -843,6 +858,15 @@ const downloadPng = () => {
   border: 1px dashed #ddd;
 }
 
+.badge-preview {
+  padding: 10px;
+  overflow-x: auto;
+  background: #ffffff;
+  width: 100%;
+  line-height: 1;
+  text-align: center;
+}
+
 .badge-code-container {
   background-color: #f5f5f5;
   border-radius: 8px;
@@ -863,6 +887,10 @@ const downloadPng = () => {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
+
+  .action-btn {
+    margin: 0;
+  }
 }
 
 /* 响应式设计 */

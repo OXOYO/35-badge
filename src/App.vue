@@ -10,13 +10,13 @@
           />
           <p>{{ t('projectDescription') }}</p>
         </a>
-        <div class="language-switch">
-          <el-segmented
-            :model-value="currentLang"
-            :options="languageOptions"
-            @change="onLanguageChange"
-          />
-        </div>
+        <el-segmented
+          class="language-switch"
+          :model-value="currentLang"
+          :options="languageOptions"
+          size="small"
+          @change="onLanguageChange"
+        />
       </div>
     </header>
 
@@ -51,8 +51,8 @@ import { siteInfo } from './constants/config.js'
 const { t, switchLanguage, currentLang } = useI18n()
 
 const languageOptions = computed(() => [
-  { label: '中文', value: 'zh' },
-  { label: 'English', value: 'en' }
+  { label: '中', value: 'zh' },
+  { label: 'En', value: 'en' }
 ])
 
 const onLanguageChange = lang => {
@@ -66,8 +66,6 @@ onMounted(() => {
 </script>
 
 <style>
-@import './styles/variables.scss';
-
 * {
   margin: 0;
   padding: 0;
@@ -102,6 +100,7 @@ body {
   max-width: var(--container-max-width);
   height: 100px;
   margin: 0 auto;
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -129,12 +128,6 @@ body {
 
 .header-text:hover {
   text-decoration: none;
-}
-
-.language-switch {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--border-radius-base);
-  padding: 4px;
 }
 
 .main {
@@ -172,8 +165,9 @@ body {
 
 @media (max-width: 768px) {
   .header-content {
-    flex-direction: column;
-    text-align: center;
+    p {
+      display: none;
+    }
   }
 
   .header-text h1 {
