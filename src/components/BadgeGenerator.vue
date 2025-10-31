@@ -332,7 +332,7 @@ const badgeSvg = computed(() => {
     if (badgeConfig[segment] && badgeConfig[segment].value !== '') {
       segments.push({
         index: badgeConfig[segment].index,
-        label: segment,
+        key: segment,
         text: badgeConfig[segment].value,
         bgColor: badgeConfig[segment].bgColor,
         textColor: badgeConfig[segment].textColor
@@ -345,7 +345,7 @@ const badgeSvg = computed(() => {
     if (item.text) {
       segments.push({
         index: item.index,
-        label: item.text,
+        key: 'customText',
         text: item.text,
         bgColor: item.bgColor,
         textColor: item.textColor
@@ -485,11 +485,16 @@ const badgeSvg = computed(() => {
 
     // 如果使用阴影效果，添加阴影文本
     if (useShadow) {
-      svg += `<text aria-hidden="true" x="${textX * 10}" y="${textY * 10 + 10}" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${getTextWidth(segment.text, fontSize) * 10}">${segment.text}</text>`
+      // 为阴影文本添加独立标题
+      svg += `<text aria-hidden="true" x="${textX * 10}" y="${textY * 10 + 10}" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${getTextWidth(segment.text, fontSize) * 10}" alt="XXXX">`
+      svg += `<title>${t(segment.key)}</title>`
+      svg += `${segment.text}</text>`
     }
 
     // 添加主文本
-    svg += `<text x="${textX * 10}" y="${textY * 10}" transform="scale(.1)" fill="${segment.textColor}" textLength="${getTextWidth(segment.text, fontSize) * 10}">${segment.text}</text>`
+    svg += `<text x="${textX * 10}" y="${textY * 10}" transform="scale(.1)" fill="${segment.textColor}" textLength="${getTextWidth(segment.text, fontSize) * 10}" alt="YYY">`
+    svg += `<title>${t(segment.key)}</title>`
+    svg += `${segment.text}</text>`
 
     // 更新下一个段落的起始位置
     currentX += width
