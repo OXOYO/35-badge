@@ -10,6 +10,7 @@ export default {
   age: '年龄',
   schoolLevel: '学校级别',
   education: '学历',
+  marring: '婚育',
   position: '岗位',
   employmentStatus: '在职状态',
   overtimeStatus: '加班状态',

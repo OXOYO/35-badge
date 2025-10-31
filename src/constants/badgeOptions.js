@@ -198,6 +198,70 @@ export const EDUCATION_OPTIONS = [
   }
 ]
 
+// 婚育选项配置
+export const MARRIAGE_OPTIONS = [
+  {
+    value: '未婚',
+    label: '未婚',
+    bgColor: '#90CAF9', // 浅蓝色，象征自由和无限可能
+    textColor: '#000000'
+  },
+  {
+    value: '未婚未育',
+    label: '未婚未育',
+    bgColor: '#90CAF9', // 浅蓝色，与未婚保持一致
+    textColor: '#000000'
+  },
+  {
+    value: '未婚已育',
+    label: '未婚已育',
+    bgColor: '#4FC3F7', // 蓝色，表示特殊情况
+    textColor: '#000000'
+  },
+  {
+    value: '已婚',
+    label: '已婚',
+    bgColor: '#32CD32', // 酸橙绿，象征稳定和幸福
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '已婚未育',
+    label: '已婚未育',
+    bgColor: '#2E7D32', // 深绿色，表示已婚但未育状态
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '已婚已育',
+    label: '已婚已育',
+    bgColor: '#1B5E20', // 深深绿色，表示完整的家庭状态
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '离异',
+    label: '离异',
+    bgColor: '#FF8C00', // 深橙色，表示人生转折
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '再婚',
+    label: '再婚',
+    bgColor: '#FFA000', // 琥珀色，象征新的开始
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '丧偶',
+    label: '丧偶',
+    bgColor: '#D32F2F', // 红色，表示人生重大变故
+    textColor: '#FFFFFF'
+  },
+  {
+    value: '守寡',
+    label: '守寡',
+    bgColor: '#C62828', // 深红色，表示长期状态
+    textColor: '#FFFFFF'
+  }
+]
+
 // 岗位选项配置
 export const POSITION_OPTIONS = [
   {
@@ -489,6 +553,17 @@ export const SALARY_OPTIONS = [
     textColor: '#000000' // 黑色文字
   }
 ]
+
+// 选项集合
+export const OPTIONS_MAP = {
+  age: AGE_OPTIONS,
+  education: EDUCATION_OPTIONS,
+  marring: MARRIAGE_OPTIONS,
+  position: POSITION_OPTIONS,
+  employmentStatus: EMPLOYMENT_STATUS_OPTIONS,
+  overtimeStatus: OVERTIME_STATUS_OPTIONS,
+  salary: SALARY_OPTIONS
+}
 
 // 预定义颜色
 export const PREDEFINE_COLORS = [

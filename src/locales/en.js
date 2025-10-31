@@ -10,6 +10,7 @@ export default {
   age: 'Age',
   schoolLevel: 'School Level',
   education: 'Education',
+  marring: 'Marring',
   position: 'Position',
   employmentStatus: 'Employment Status',
   overtimeStatus: 'Overtime Status',

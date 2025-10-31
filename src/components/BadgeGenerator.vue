@@ -84,7 +84,7 @@
                     v-model="item.index"
                     :min="1"
                     :max="20"
-                    :disabled="item.value === ''"
+                    :disabled="!item.text"
                     controls-position="right"
                   />
                   <el-color-picker
@@ -228,12 +228,7 @@ import xml from 'highlight.js/lib/languages/xml'
 import { getTextWidth } from '../utils/textUtils.js'
 import { useI18n } from '../composables/useI18n.js'
 import {
-  AGE_OPTIONS,
-  EDUCATION_OPTIONS,
-  POSITION_OPTIONS,
-  EMPLOYMENT_STATUS_OPTIONS,
-  OVERTIME_STATUS_OPTIONS,
-  SALARY_OPTIONS,
+  OPTIONS_MAP,
   PREDEFINE_COLORS,
   DEFAULT_COLORS,
   BADGE_STYLES,
@@ -247,60 +242,11 @@ hljs.registerLanguage('xml', xml)
 
 const { t } = useI18n()
 
-// 选项集合
-const OPTIONS_MAP = {
-  age: AGE_OPTIONS,
-  education: EDUCATION_OPTIONS,
-  position: POSITION_OPTIONS,
-  employmentStatus: EMPLOYMENT_STATUS_OPTIONS,
-  overtimeStatus: OVERTIME_STATUS_OPTIONS,
-  salary: SALARY_OPTIONS
-}
-
 // 徽章配置
-const badgeConfig = reactive({
-  age: {
-    index: 0,
-    value: '',
-    bgColor: DEFAULT_COLORS.bgColor,
-    textColor: DEFAULT_COLORS.textColor
-  },
-  education: {
-    index: 1,
-    value: '',
-    bgColor: DEFAULT_COLORS.bgColor,
-    textColor: DEFAULT_COLORS.textColor
-  },
-  position: {
-    index: 2,
-    value: '',
-    bgColor: DEFAULT_COLORS.bgColor,
-    textColor: DEFAULT_COLORS.textColor
-  },
-  employmentStatus: {
-    index: 3,
-    value: '',
-    bgColor: DEFAULT_COLORS.bgColor,
-    textColor: DEFAULT_COLORS.textColor
-  },
-  overtimeStatus: {
-    index: 4,
-    value: '',
-    bgColor: DEFAULT_COLORS.bgColor,
-    textColor: DEFAULT_COLORS.textColor
-  },
-  salary: {
-    index: 5,
-    value: '',
-    bgColor: DEFAULT_COLORS.bgColor,
-    textColor: DEFAULT_COLORS.textColor
-  }
-})
+const badgeConfig = reactive({})
 
 // 自定义文本数组
-const customTexts = ref([
-  { index: 6, text: '', bgColor: '#007ec6', textColor: '#fff' }
-])
+const customTexts = ref([])
 
 const MAX_CUSTOM_TEXT_COUNT = 5
 
@@ -323,7 +269,7 @@ const svgCodeRef = ref(null)
 const addCustomText = () => {
   if (customTexts.value.length < MAX_CUSTOM_TEXT_COUNT) {
     customTexts.value.push({
-      index: customTexts.value.length + 6,
+      index: customTexts.value.length + 7,
       text: '',
       bgColor: DEFAULT_COLORS.bgColor,
       textColor: DEFAULT_COLORS.textColor
@@ -591,8 +537,20 @@ const highlightedSvgCode = computed(() => {
   return hljs.highlight(badgeSvgForCodePreview.value, { language: 'xml' }).value
 })
 
-// 在组件挂载后高亮代码
 onMounted(() => {
+  // 初始化配置数据
+  Object.keys(OPTIONS_MAP).forEach((key, index) => {
+    badgeConfig[key] = {
+      index: index + 1,
+      value: '',
+      bgColor: DEFAULT_COLORS.bgColor,
+      textColor: DEFAULT_COLORS.textColor
+    }
+  })
+  if (!customTexts.value.length) {
+    addCustomText()
+  }
+  // 高亮代码
   if (svgCodeRef.value) {
     hljs.highlightElement(svgCodeRef.value)
   }
